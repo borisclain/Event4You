@@ -1,0 +1,99 @@
+<resources>
+
+    <string name="app_name">Event4You</string>
+    <string name="action_settings">Paramètres</string>
+
+    <string name="prompt">Dans quelle ville êtes-vous?</string>
+    <string name="GoButton">Go!</string>
+    <string name="editT">Entrez votre ville</string>
+
+    <string name="start">Le 2 mars 2015 à 20h00</string>
+    <string name="stop">Le 2 mars 2015 à 23h00</string>
+    <string name="prix">payant</string>
+
+    <string name="menuShowFavorites">Mes favoris</string>
+    <string name="location">Lieu : </string>
+
+
+
+    <string name="cat_music">music</string>
+    <string name="cat_conference">conference</string>
+    <string name="cat_comedy">comedy</string>
+    <string name="cat_learning_education">learning_education</string>
+    <string name="cat_family_fun_kids">family_fun_kids</string>
+    <string name="cat_festivals_parades">festivals_parades</string>
+    <string name="cat_movies_film">movies_film</string>
+    <string name="cat_food">food</string>
+    <string name="cat_fundraisers">fundraisers</string>
+    <string name="cat_art">art</string>
+    <string name="cat_support">support</string>
+    <string name="cat_holiday">holiday</string>
+    <string name="cat_books">books</string>
+    <string name="cat_attractions">attractions</string>
+    <string name="cat_community">community</string>
+    <string name="cat_business">business</string>
+    <string name="cat_singles_social">singles_social</string>
+    <string name="cat_schools_alumni">schools_alumni</string>
+    <string name="cat_club_associations">clubs_associations</string>
+    <string name="cat_outdoors_recreation">outdoors_recreation</string>
+    <string name="cat_performing_arts">performing_arts</string>
+    <string name="cat_animals">animals</string>
+    <string name="cat_politics_activism">politics_activism</string>
+    <string name="cat_sales">sales</string>
+    <string name="cat_science">science</string>
+    <string name="cat_religion_spirituality">religion_spirituality</string>
+    <string name="cat_sports">sports</string>
+    <string name="cat_technology">technology</string>
+    <string name="cat_other">other</string>
+
+
+    <string name="hello_world">Hello world!</string>
+    <string name="titre_filtrer">""</string>
+
+    <string name="rechercher_date">Par date</string>
+    <string name="date_debut">Modifier la date de début </string>
+    <string name="date_fin">Modifier la date de fin     </string>
+    <string name="message_toast_erreurs_dates">La date de fin doit être obligatoirement ultérieure à la date de début.</string>
+
+
+    <string-array name="dates_array" >
+        <item ><b>Aujourd\'hui</b></item>
+        <item ><b>Demain</b></item>
+        <item ><b>Les 7 prochains jours</b></item>
+        <item ><b>Le mois prochain</b></item>
+        <item ><b>Cette année</b></item>
+    </string-array>
+
+
+
+    <string name="rechercher_lieu">Par lieu</string>
+    <string name="lieu">Entrez une ville </string>
+
+
+    <string name="rechercher_categories">Par catégorie</string>
+
+    <string name="concerts">Musique et concerts</string>
+    <string name="films">Films</string>
+    <string name="musee">Art et Musées</string>
+    <string name="loisirs">Loisirs</string>
+    <string name="sciences">Sciences et technologie</string>
+    <string name="sport">Sports</string>
+    <string name="gastronomie">Gastronomie</string>
+    <string name="nightlife">Vie nocturne</string>
+
+    <string name="validation_filtrage">Filtrer les résultats</string>
+
+
+    <string name="startDebut">Début : </string>
+    <string name="end">Fin : </string>
+    <string name="price">Prix : </string>
+    <string name="le_lieu">Lieu : </string>
+    <string name="titre_vide">Test Titre </string>
+
+
+    <string name="first_screen_1st">Pour</string>
+    <string name="first_screen_2nd">commencer...</string>
+
+
+
+</resources>

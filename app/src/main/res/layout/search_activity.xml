@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="26dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/title"
+        android:text="Rechercher"
+        android:background="#2b9cabc2" />/>
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/activity"
+        android:weightSum="1"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:baselineAligned="true"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:background="#ffffff"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp">
+
+
+
+        // ts les EditText doivent avoir leur longeur de caractères limitée (différente selon l'editText considéré)
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/rechercher_date"
+            android:id="@+id/rechercher_date"
+            android:textSize="20sp" />
+
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:orientation="vertical" android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1"
+            android:visibility="visible"
+            android:id="@+id/linearlayaout_date"
+            android:background="@drawable/contour"
+            android:padding="10dp"
+            android:layout_marginBottom="10dp"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp">
+
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/editText_date_debut"
+                android:editable="false"
+                android:inputType="date"
+                android:textStyle="italic"
+                android:layout_weight="0.7"
+                android:layout_gravity="center_horizontal"
+                android:linksClickable="false"
+                android:textSize="13dp"
+                android:gravity="center_horizontal"
+                android:hint="@string/date_debut"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"/>
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/editText_date_fin"
+                android:editable="false"
+                android:inputType="date"
+                android:textStyle="italic"
+                android:layout_weight="0.7"
+                android:layout_gravity="center_horizontal"
+                android:linksClickable="false"
+                android:textSize="13dp"
+                android:gravity="center_horizontal"
+                android:hint="@string/date_fin" />
+
+
+        </LinearLayout>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/rechercher_lieu"
+            android:id="@+id/rechercher_lieu"
+            android:layout_gravity="center_horizontal"
+            android:textSize="20sp" />
+
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/editText_lieu"
+            android:hint="@string/lieu"
+            android:inputType="text|textAutoComplete"
+            android:textStyle="italic"
+            android:background="@drawable/contour"
+            android:padding="10dp"
+            android:layout_marginBottom="10dp" />
+
+
+        // recherche par catégorie
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/rechercher_categories"
+            android:id="@+id/rechercher_categories"
+            android:textSize="20sp" />
+
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1"
+            android:visibility="visible"
+            android:id="@+id/linearlayaout_categoriess"
+            android:orientation="vertical"
+            android:baselineAligned="false"
+            android:longClickable="false"
+            android:background="@drawable/contour"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="10dp">
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                android:id="@+id/linearlayaout_bouton_concert"
+                android:orientation="horizontal"
+                android:baselineAligned="false"
+
+                android:longClickable="false"
+                android:paddingTop="10dp">
+
+                <ImageButton
+                    android:layout_width="20dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/bouton_concert"
+                    android:clickable="true"
+                    android:onClick="bouton_concert"
+                    android:layout_weight="1"
+                    android:src="@drawable/bouton_concert_non_appuye"
+                    android:background="#ffffffff" />
+
+                <ImageButton
+                    android:layout_width="20dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/bouton_film"
+                    android:onClick="bouton_films"
+                    android:layout_weight="1"
+                    android:src="@drawable/bouton_film"
+                    android:background="#ffffff" />
+
+                <ImageButton
+                    android:layout_width="20dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/bouton_musee"
+                    android:onClick="bouton_affaires"
+                    android:layout_weight="1"
+                    android:src="@drawable/bouton_musee"
+                    android:background="#ffffff" />
+
+                <ImageButton
+                    android:layout_width="20dp"
+                    android:layout_height="wrap_content"
+
+
+                    android:id="@+id/bouton_loisirs"
+                    android:layout_weight="1"
+                    android:onClick="bouton_loisirs"
+                    android:src="@drawable/bouton_loisirs"
+                    android:background="#ffffff" />
+
+
+            </LinearLayout>
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                android:id="@+id/linearlayaout_textes_boutonss"
+                android:orientation="horizontal"
+                android:baselineAligned="false"
+
+                android:longClickable="false">
+
+                <TextView
+                    android:layout_width="20dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/texte_bouton_concert"
+                    android:text="@string/concerts"
+                    android:textSize="12sp"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal" />
+
+                <TextView
+                    android:layout_width="20dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/films"
+                    android:id="@+id/texte_bouton_filmss"
+                    android:textSize="12sp"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal" />
+
+                <TextView
+                    android:layout_width="20dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/musee"
+                    android:id="@+id/texte_bouton_musee"
+                    android:textSize="12sp"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal" />
+
+                <TextView
+                    android:layout_width="20dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/loisirs"
+                    android:id="@+id/texte_bouton_loisirs"
+                    android:textSize="12sp"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal" />
+
+            </LinearLayout>
+
+
+
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                android:id="@+id/linearlayaout_categories"
+                android:orientation="horizontal"
+                android:baselineAligned="false"
+                android:longClickable="false"
+                android:paddingTop="10dp">
+
+
+                <ImageButton
+                    android:layout_width="20dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/bouton_sciences"
+                    android:clickable="true"
+                    android:onClick="bouton_sciences"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="false"
+                    android:src="@drawable/bouton_sciences"
+                    android:background="#ffffff" />
+
+                <ImageButton
+                    android:layout_width="20dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/bouton_nightlife"
+                    android:clickable="true"
+                    android:onClick="bouton_nightlife"
+                    android:layout_weight="1"
+                    android:src="@drawable/bouton_fete"
+                    android:background="#ffffff" />
+
+                <ImageButton
+                    android:layout_width="20dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/bouton_gastronomie"
+                    android:clickable="true"
+                    android:onClick="bouton_gastronomie"
+                    android:layout_weight="1"
+                    android:src="@drawable/bouton_gastronomie"
+                    android:background="#ffffff" />
+
+                <ImageButton
+                    android:layout_width="20dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/bouton_sport"
+                    android:clickable="true"
+                    android:onClick="bouton_sport"
+                    android:layout_weight="1"
+                    android:src="@drawable/bouton_sport"
+                    android:background="#ffffff" />
+
+            </LinearLayout>
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                android:id="@+id/linearlayaout_textes_boutons"
+                android:orientation="horizontal"
+                android:baselineAligned="false"
+
+                android:longClickable="false"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="-1dp"
+                android:layout_marginBottom="3dp">
+
+                <TextView
+                    android:layout_width="20dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/texte_bouton_sciences"
+                    android:text="@string/sciences"
+                    android:textSize="12sp"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal" />
+
+                <TextView
+                    android:layout_width="20dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/nightlife"
+                    android:id="@+id/texte_bouton_films"
+                    android:textSize="12sp"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal" />
+
+                <TextView
+                    android:layout_width="20dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/gastronomie"
+                    android:id="@+id/texte_bouton_gastronomie"
+                    android:textSize="12sp"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal" />
+
+                <TextView
+                    android:layout_width="20dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sport"
+                    android:id="@+id/texte_bouton_nightlife"
+                    android:textSize="12sp"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/validation_filtrage"
+            android:id="@+id/validation_filtrage"
+            android:onClick="validation_filtrage"
+            android:textSize="16sp"
+            android:background="@drawable/bouton_filtrage"
+            android:textColor="#fffdfff3" />
+
+    </LinearLayout>
+
+
+
+</LinearLayout>
