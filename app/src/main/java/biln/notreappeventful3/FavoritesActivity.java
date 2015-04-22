@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -26,7 +27,7 @@ public class FavoritesActivity extends MyMenu implements View.OnClickListener, A
     DBHelper dbh;
     MyAdapter adapter;
     String city;
-
+    Boolean resumeHasRun = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +36,8 @@ public class FavoritesActivity extends MyMenu implements View.OnClickListener, A
         TextView title = (TextView)findViewById(R.id.title);
         title.setText("Mes Favoris:");
 
-        dbh = new DBHelper(this);
+        //dbh = new DBHelper(this)
+        dbh = MainActivity.dbh;
         db = dbh.getWritableDatabase();
         Cursor c = DBHelper.listFavoris(db);
         adapter = new MyAdapter(this, c);
@@ -44,12 +46,34 @@ public class FavoritesActivity extends MyMenu implements View.OnClickListener, A
         listv.setOnItemClickListener(this);
     }
 
-    protected void onResume() {
+    protected void onResume(){
         super.onResume();
+        if(!resumeHasRun) {
+            resumeHasRun = true;
+            return;
+        }
+        adapter.updateResults();
     }
+
 
     public void onClick(View v){
     }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        int id = item.getItemId();
+        //si le clic se fait sur l'icône de l'activité des Favoris, ne rien faire
+        if (id == R.id.menuShowFavorites) {
+            return true;
+        }
+        //sinon, faire comme la classe parent le prévoit
+        return super.onOptionsItemSelected(item);
+    }
+
+
+
+
 
     /**
      * Clic sur l'événement pour voir les détails
@@ -67,7 +91,7 @@ public class FavoritesActivity extends MyMenu implements View.OnClickListener, A
         Intent intent = new Intent(this, DetailsActivity.class);
         Bundle b = new Bundle();
 
-        Cursor c = DBHelper.getEventByID(db, viewID);
+        Cursor c = dbh.getEventByID(db, viewID);
 
         b.putString("title", c.getString(c.getColumnIndex(DBHelper.C_TITLE)) );
         b.putString("location", c.getString(c.getColumnIndex(DBHelper.C_LOCATION)) );
@@ -133,13 +157,15 @@ public class FavoritesActivity extends MyMenu implements View.OnClickListener, A
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
                     int id = ((Integer)buttonView.getTag()).intValue();
-                    //Toast.makeText(getApplicationContext(), "Retiré des favoris ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Retiré des favoris ", Toast.LENGTH_SHORT).show();
                     Log.d("Listener", "Checked "+isChecked+" " + " "+ id  );
                     dbh.changeFavoriteStatus(db, id);//(int)getItemId(pos)
 
                     //Rafraîchir l'activité pour mettre à jour la listView
-                    finish();
-                    startActivity(getIntent());
+                    //finish();
+                    //startActivity(getIntent());
+
+                    adapter.updateResults();
 
                 }
             });
@@ -148,6 +174,11 @@ public class FavoritesActivity extends MyMenu implements View.OnClickListener, A
             myBtn.setTag(new Integer(Integer.parseInt(id)));
 
             return v;
+        }
+
+        public void updateResults(){
+            this.changeCursor(dbh.listFavoris(db));
+            notifyDataSetChanged();
         }
 
         @Override

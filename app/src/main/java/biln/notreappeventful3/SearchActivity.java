@@ -1,6 +1,8 @@
 package biln.notreappeventful3;
 
 
+import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -45,8 +47,12 @@ public class SearchActivity extends MyMenu implements View.OnClickListener, Sele
     Date fin ;
     ArrayList<String> categories;
 
+    DBHelper dbh;
+    SQLiteDatabase db;
     //format de l'Edit text choisi
     DateFormat format_chaine = new SimpleDateFormat("dd MMM yyyy");
+    //format du query pour l'API web
+    DateFormat queryFormat = new SimpleDateFormat("yyyyMMdd00");
 
     @Override
     public void onCreate(final Bundle savedInstanceState) {
@@ -318,6 +324,8 @@ public class SearchActivity extends MyMenu implements View.OnClickListener, Sele
         Boolean debutHasBeenEntered = true;
         Boolean finHasBeenEntered = true;
 
+        String dateS = "";
+        String dateT = "";
 
         try {
             debut = format_chaine.parse(edit_text_date_debut.getText().toString()) ;
@@ -338,23 +346,41 @@ public class SearchActivity extends MyMenu implements View.OnClickListener, Sele
 
         //Si l'usager a bien entré les deux dates, on les traite dans la requête
         if (debutHasBeenEntered && finHasBeenEntered) {
-
             if (fin.compareTo(debut) < 0) {
                 Toast.makeText(getApplicationContext(), R.string.message_toast_erreurs_dates, Toast.LENGTH_LONG).show();
             }
             else{
-                String date = "";
+                //cas non pathologique
+                dateS = queryFormat.format(debut);
+                dateT = queryFormat.format(fin);
+                Log.d("DATES:", " "+dateS+" "+dateT);
             }
         }
         //Si l'usager n'a pas entré les deux dates nécessaires, on n'utilisera aucune date dans le query
         else {
-            //cas non pathologique - traitement filtrage
+            Log.d("DATES:", "Au moins une date n'a pas été entrée. Recherche temporelle pour le futur");
         }
 
-
+        Log.d("DATES: ", " " + dateS + " "+dateT);
         for(String cat : categories){
-            Log.d("Catégorie :", " "+cat);
+            Log.d("CATEGORIES: ", " "+cat);
         }
+
+
+        dbh = DBHelper.getInstance(this);
+        db = dbh.getWritableDatabase();
+        dbh.cleanLastAdvancedSearch(db);
+        dbh.close();
+
+        Intent intent = new Intent(this, SearchResults.class);
+        Bundle b = new Bundle();
+        b.putInt("Called from Search Activity", 1);
+        b.putString("dateS", dateS); // dateS = yyyyMMdd00 ou dateS = ""
+        b.putString("dateT", dateT); // dateT = yyyyMMdd00 ou dateT = ""
+        b.putStringArrayList("categories", categories);
+        intent.putExtras(b);
+        startActivity(intent);
+
 
     }
 

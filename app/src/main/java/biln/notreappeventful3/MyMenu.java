@@ -21,7 +21,7 @@ public class MyMenu extends ActionBarActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
@@ -30,6 +30,7 @@ public class MyMenu extends ActionBarActivity {
         else if (id == R.id.menuSuggestion) {
             Toast.makeText(getApplicationContext(), "Consultons nos suggestions", Toast.LENGTH_SHORT).show();
             Intent i = new Intent(this, MainActivity.class);
+            i.putExtra("Called from menu", 1);
             startActivity(i);
             //finish();
             return true;

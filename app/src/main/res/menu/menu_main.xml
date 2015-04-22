@@ -17,7 +17,7 @@
 
     <item android:id="@+id/menuShowFavorites"
         app:showAsAction="always"
-        android:icon="@android:drawable/btn_star_big_on"
+        android:icon="@android:drawable/btn_star_big_off"
         android:checkable="true"
         android:title="Mes favoris">
     </item>

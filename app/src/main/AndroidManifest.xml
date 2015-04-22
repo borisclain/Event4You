@@ -11,7 +11,7 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="NotreAppEventful3"
+        android:label="Event4You"
         android:theme="@style/AppTheme" >
 
         <activity
@@ -49,6 +49,10 @@
             android:label="@string/app_name">
         </activity>
 
+        <activity
+            android:name=".SearchResults"
+            android:label="@string/app_name">
+        </activity>
 
         <service android:name=".ServiceSearchAndPopulate"></service>
 

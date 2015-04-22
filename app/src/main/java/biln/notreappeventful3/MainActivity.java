@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -34,10 +35,11 @@ public class MainActivity extends MyMenu implements View.OnClickListener, Adapte
     ListView listv;
     MyAdapter adapter;
     SQLiteDatabase db;
-    DBHelper dbh;
+    static DBHelper dbh; //static DBHelper
     BusyReceiver busyR;
     IntentFilter filter;
 
+    Boolean resumeHasRun = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,36 +51,71 @@ public class MainActivity extends MyMenu implements View.OnClickListener, Adapte
         SharedPreferences mySettings = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         city = mySettings.getString("myCity", "Montreal"); //valeur par défaut : Montreal
 
-        dbh = new DBHelper(this);
+        dbh = DBHelper.getInstance(this);
         db = dbh.getWritableDatabase();
+
         Cursor c = DBHelper.listEvents(db);
         adapter = new MyAdapter(this, c);
         listv = (ListView)findViewById(R.id.activity_list);
         listv.setAdapter(adapter);
         listv.setOnItemClickListener(this);
 
-        Intent in = new Intent(this, ServiceSearchAndPopulate.class);
-        in.putExtra("populateSuggestedList", true);  //aller chercher l'information sur le web IMPORTANT
-        startService(in);
         busyR = new BusyReceiver();
         filter = new IntentFilter("biln.notreappeventful3.BUSY");
     }
 
+    protected void onStart(){
+        super.onStart();
+        int calledFromMenu = getIntent().getIntExtra("Called from menu", 0);
+        if (calledFromMenu != 1) {
+            registerReceiver(busyR, filter);
+            Intent in = new Intent(this, ServiceSearchAndPopulate.class);
+            in.putExtra("populateSuggestedList", true);  //aller chercher l'information sur le web
+            startService(in);
+        }
+    }
 
     protected void onResume(){
         super.onResume();
-        registerReceiver(busyR, filter);
+        if(!resumeHasRun) {
+            resumeHasRun = true;
+            //registerReceiver(busyR, filter);
+            return;
+        }
+        adapter.updateResults();
     }
 
+    //TODO : rajouté
+    @Override
+    public void onStop(){
+        super.onStop();
+        //adapter.getCursor().close();
+        //dbh.close();
+    }
 
     @Override
     public void onPause(){
         super.onPause();
-        unregisterReceiver(busyR);
     }
 
     public void onClick(View v){
     }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        int id = item.getItemId();
+        //si le clic se fait sur l'icône de l'activité des Suggestions, ne rien faire
+        if (id == R.id.menuSuggestion) {
+            return true;
+        }
+        //sinon, faire comme la classe parent le prévoit
+        return super.onOptionsItemSelected(item);
+    }
+
+
+
+
 
     @Override
     public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long viewID) {
@@ -89,26 +126,28 @@ public class MainActivity extends MyMenu implements View.OnClickListener, Adapte
         Intent intent = new Intent(this, DetailsActivity.class); //TODO : DetailsActivity
         Bundle b = new Bundle();
 
-        Cursor c = DBHelper.getEventByID(db, viewID);
-
+        Cursor c = dbh.getEventByID(db, viewID);
         b.putString("title", c.getString(c.getColumnIndex(DBHelper.C_TITLE)) );
         b.putString("location", c.getString(c.getColumnIndex(DBHelper.C_LOCATION)) );
         b.putString("startT", c.getString(c.getColumnIndex(DBHelper.C_DATE_START)) );
         b.putString("description", c.getString(c.getColumnIndex(DBHelper.C_DESCRIPTION)) );
         b.putString("eventfulID", c.getString(c.getColumnIndex(DBHelper.C_ID_FROM_EVENTFUL)));
+
         intent.putExtras(b);
         startActivity(intent);
     }
+
 
     public class BusyReceiver extends BroadcastReceiver {
 
         public void onReceive(Context context, Intent intent){
             if(intent.getBooleanExtra("begin", false)){
-                //Toast.makeText(context, "Downloading and putting in DB", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Downloading and putting in DB", Toast.LENGTH_SHORT).show();
             }
             if(intent.getBooleanExtra("end", false)){
                 Cursor c = dbh.listEvents(db);
-                adapter.changeCursor(c);
+                adapter.changeCursor(c); //cela ferme le curseur et en assigne un nouveau
+                unregisterReceiver(busyR);
             }
         }
 
@@ -122,6 +161,15 @@ public class MainActivity extends MyMenu implements View.OnClickListener, Adapte
             super(context, c, true);
             inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
+
+        public void updateResults(){
+            db = dbh.getWritableDatabase();
+            this.changeCursor(dbh.listEvents(db)); //cela ferme l'ancien curseur et ouvre un nouveau
+            notifyDataSetChanged();
+        }
+
+
+
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
@@ -149,15 +197,21 @@ public class MainActivity extends MyMenu implements View.OnClickListener, Adapte
             DateFormat dateFormatFinal= new SimpleDateFormat("dd MMM yyyy hh:mm");
             DateFormat dateFormatIni= new SimpleDateFormat("yyyy-MM-dd hh:mm");
 
+
             String dateDebut = c.getString(c.getColumnIndex(DBHelper.C_DATE_START));
             String dateFin = c.getString(c.getColumnIndex(DBHelper.C_DATE_STOP));
-            try{
+            try {
                 Date dateOld1 = dateFormatIni.parse(dateDebut);
-                Date dateOld2 = dateFormatIni.parse(dateFin);
                 String newDate1 = dateFormatFinal.format(dateOld1);
-                String newDate2 = dateFormatFinal.format(dateOld2);
                 dateDebut = newDate1;
-                dateFin = newDate2;
+
+                if (!(dateFin == "2030-01-01")){
+                    Date dateOld2 = dateFormatIni.parse(dateFin);
+                    String newDate2 = dateFormatFinal.format(dateOld2);
+                    dateFin = newDate2;
+                }else{
+                    dateFin = "inconnue";
+                }
             }catch(ParseException e){
                 e.printStackTrace();
             }
@@ -182,8 +236,8 @@ public class MainActivity extends MyMenu implements View.OnClickListener, Adapte
                     Log.d("Listener", "Checked " + isChecked + " "  + " " + id );
                     dbh.changeFavoriteStatus(db, id);//(int)getItemId(pos)
 
-
-                    Cursor nc = DBHelper.listEvents(db);
+                    //TODO DBHelper a changé pour dbh
+                    Cursor nc = dbh.listEvents(db);
                     MyAdapter.this.swapCursor(nc);
 
                     //voir listview: MyAdapter notifyDatasetchanged

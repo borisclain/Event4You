@@ -4,8 +4,11 @@ import android.app.IntentService;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 /**
  * Created by boris on 3/26/15.
@@ -29,8 +32,9 @@ public class ServiceSearchAndPopulate extends IntentService{
     protected void onHandleIntent(Intent intent){
         Log.d("Service", "onHandleIntent appelé");
 
+
         EventfulAPI web = new EventfulAPI();
-        DBHelper dbh = new DBHelper(this); //getApplicationContext si ça ne fonctionne pas
+        DBHelper dbh = DBHelper.getInstance(this); //getApplicationContext si ça ne fonctionne pas
         SQLiteDatabase db = dbh.getWritableDatabase();
 
         //message de debut
@@ -39,16 +43,25 @@ public class ServiceSearchAndPopulate extends IntentService{
         this.sendBroadcast(in);
 
         if(intent.getBooleanExtra("populateSuggestedList", false)) {
+            Log.d("Service", "ON FAIT UNE RECHERCHE WEB DE SUGGESTIONS");
             populateSuggestedList(web, db);
             in = new Intent("biln.notreappeventful3.BUSY");
             in.putExtra("end", true);
             this.sendBroadcast(in);
         }
-        else if (intent.getBooleanExtra("populateSearchedList", false)){
-            populateSuggestedList(web, db);
+        else if (intent.getBooleanExtra("populateAdvancedSearchList", false)){
+            Log.d("Service", "ON FAIT UNE RECHERCHE WEB AVANCÉE");
+
+            Bundle b = intent.getExtras();
+            String dateStart = b.getString("dateS");
+            String dateStop = b.getString("dateT");
+            ArrayList<String> categories = b.getStringArrayList("categories");
+
+            populateAdvancedSearchList(web, db, dateStart, dateStop, categories);
             in = new Intent("biln.notreappeventful3.BUSY");
             in.putExtra("end", true);
             this.sendBroadcast(in);
+
         }
         else
             Toast.makeText(getApplicationContext(), "Rien n'est demande", Toast.LENGTH_SHORT).show();
@@ -70,11 +83,12 @@ public class ServiceSearchAndPopulate extends IntentService{
 
             db.update(DBHelper.TABLE_EVENTS, val, "_id_from_eventful = \""+web.eventsFound.get(i).idFromEventful+"\"", null);
             db.insertWithOnConflict(DBHelper.TABLE_EVENTS, null, val, SQLiteDatabase.CONFLICT_IGNORE);
+
         }
     }
 
-    private void populateSearchedList(EventfulAPI web, SQLiteDatabase db) {
-        web.getNextEvents(city);
+    private void populateAdvancedSearchList(EventfulAPI web, SQLiteDatabase db, String dateStart, String dateStop, ArrayList<String> categories) {
+        web.getDesiredResults(city, dateStart, dateStop, categories);
         ContentValues val = new ContentValues();
         for (int i = 0; i < web.eventsFound.size(); i++) {
             val.put(DBHelper.C_ID_FROM_EVENTFUL, web.eventsFound.get(i).idFromEventful);
@@ -88,6 +102,11 @@ public class ServiceSearchAndPopulate extends IntentService{
             db.update(DBHelper.TABLE_EVENTS, val, "_id_from_eventful = \""+web.eventsFound.get(i).idFromEventful+"\"", null);
             db.insertWithOnConflict(DBHelper.TABLE_EVENTS, null, val, SQLiteDatabase.CONFLICT_IGNORE);
         }
+
+    }
+}
+
+
             /*
             String sqlPhrase = "INSERT OR REPLACE INTO events (_id_from_eventful, title, " +
                     "date_start, date_stop, location, description, isSuggestion, " +
@@ -100,5 +119,3 @@ public class ServiceSearchAndPopulate extends IntentService{
                     web.eventsFound.get(i).idFromEventful + "), 0));";
             db.execSQL(sqlPhrase);
             */
-    }
-}

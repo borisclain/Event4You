@@ -13,10 +13,14 @@ import java.util.Calendar;
 /**
  * Created by Boris on 2015-03-15.
  */
+
+//static
 public class DBHelper extends SQLiteOpenHelper {
 
+    private static DBHelper mInstance = null;
+
     static final String DB_NAME = "eventful.db";
-    static final int DB_VERSION = 123;                   //TODO Important pour le développement
+    static final int DB_VERSION = 151;                   //TODO Important pour le développement
 
     static final String TABLE_EVENTS = "events";
     static final String C_ID = "_id";
@@ -30,7 +34,16 @@ public class DBHelper extends SQLiteOpenHelper {
     static final String C_ADVSEARCH = "isAdvSearch";  // 1 si l'événement est nouveau, 0 sinon
     static final String C_FAVORITE = "favorite";
 
-    public DBHelper(Context context) {
+
+    public static DBHelper getInstance(Context ctx){
+        if(mInstance == null){
+            mInstance = new DBHelper(ctx.getApplicationContext());
+        }
+        return mInstance;
+    }
+
+
+    private DBHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
 
@@ -48,7 +61,6 @@ public class DBHelper extends SQLiteOpenHelper {
                 +C_ADVSEARCH+" integer default 0,"
                 +C_FAVORITE+" integer default 0,"+
                 "UNIQUE "+"("+C_ID_FROM_EVENTFUL+")"+" ON CONFLICT IGNORE)";
-                //TODO : PROBLEME POTENTIEL: ON CONFLICT,
         db.execSQL(sql);
         Log.d("DB", "DB created");
     }
@@ -71,9 +83,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         System.out.println("Aujourd'hui nous sommes le "+today);
         db.execSQL("delete from "+TABLE_EVENTS+" where date("+C_DATE_STOP+") <"+today);
-
     }
-
 
 
 
@@ -91,6 +101,17 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+
+
+    public void cleanLastAdvancedSearch(SQLiteDatabase db){
+        String whereClause = C_FAVORITE + " = " + 1 + " and " + C_ADVSEARCH + " = " + 1;
+        ContentValues val = new ContentValues();
+        val.put(C_ADVSEARCH, 0);
+        db.update(TABLE_EVENTS ,val, whereClause, null);
+        db.execSQL("delete from " + TABLE_EVENTS + " where " + C_ADVSEARCH + " = " + 1); //supprime ceux qui restent
+    }
+
+
     public static Cursor listEvents(SQLiteDatabase db){
         //" where "+C_NEW+ " = "+1+
         Cursor c = db.rawQuery("select * from " + TABLE_EVENTS +" order by " + C_DATE_STOP + " asc", null);
@@ -101,6 +122,12 @@ public class DBHelper extends SQLiteOpenHelper {
     public static Cursor listFavoris(SQLiteDatabase db){
         Cursor c = db.rawQuery("select * from "+TABLE_EVENTS+" where "+C_FAVORITE+" = "+1+ " order by " + C_DATE_STOP + " asc", null);
         Log.d("DB","liste favoris nb = "+c.getCount());
+        return c;
+    }
+
+    public static Cursor listSearchedEvents(SQLiteDatabase db){
+        Cursor c = db.rawQuery("select * from " + TABLE_EVENTS +" where "+C_ADVSEARCH+" = "+1+ " order by " + C_DATE_STOP + " asc", null);
+        Log.d("DB","liste events nb = "+c.getCount());
         return c;
     }
 
@@ -120,6 +147,10 @@ public class DBHelper extends SQLiteOpenHelper {
         Log.d("DB","cherche events nb = "+c.getCount());
         return c;
     }
+
+
+
+
 
     public static void changeFavoriteStatus(SQLiteDatabase db, int id) {
         ContentValues val = new ContentValues();

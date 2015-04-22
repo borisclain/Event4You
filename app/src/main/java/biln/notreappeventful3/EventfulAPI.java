@@ -31,8 +31,7 @@ class EventfulAPI {
     ArrayList<Event> eventsFound;                                          //peuplé par la recherche
     String apiKey = "b5JxXhsHhJTW2mzP";
     String url = "http://api.eventful.com/json/events/search?app_key="+apiKey;
-    String urlget = "http://api.eventful.com/json/events/get?app_key="+apiKey+"&id=";
-    String location;
+
 
 
     public EventfulAPI(){
@@ -51,6 +50,50 @@ class EventfulAPI {
         String query = url+"&location="+city+"&sort_order=date"+"&page_size=100"; //+"c="
         //nécessaire de faire sort_order par popularity car sinon les pages d'Eventful sont folles
         getEvents(query);
+    }
+
+    public void getDesiredResults(String city, String dateStart, String dateStop, ArrayList<String> categories){
+
+        List<NameValuePair> query = new ArrayList<NameValuePair>();
+        //On ajoute le champs clé d'API
+        query.add(new BasicNameValuePair("app_key", this.apiKey));
+
+        //On ajoute le champ location
+        query.add(new BasicNameValuePair("location", city));
+
+
+        //On ajoute le champs time
+        String time;
+        if(dateStart == "" || dateStop == ""){
+            time = "future";
+        }
+        else{
+            time = dateStart + "-" + dateStop;
+        }
+        query.add(new BasicNameValuePair("t", time));
+
+        //On ajoute le champs category
+        String catList;
+        if(categories.size() > 1) {
+            catList = "";
+            for (int i = 0; i<categories.size(); i++) {
+                catList = catList + categories.get(i);
+                if(i < categories.size() - 1)
+                    catList = catList +  ",";
+            }
+            query.add(new BasicNameValuePair("category", catList));
+        }else if(categories.size() == 1){
+            catList = categories.get(0);
+            query.add(new BasicNameValuePair("category", catList));
+        }
+
+        //On construit l'URL avec les champs
+        String url = "http://api.eventful.com/json/events/search?" + URLEncodedUtils.format(query, HTTP.UTF_8);
+        Log.d("ENCODAGE DE L'URL", url);
+
+        //On fait l'appel de la page et la récolte
+        getEvents(url);
+        Log.d("EVENTFUL API, url : ", "" + url);
     }
 
 
@@ -91,7 +134,7 @@ class EventfulAPI {
                         eventsFound.add(new Event(item.getString("id"),
                                                     item.getString("title"),
                                                         item.getString("start_time"),
-                                                            "2020-01-01",//TODO Important
+                                                            "2030-01-01",//TODO Important
                                                                 item.getString("city_name"),
                                                                     item.getString("description")));
                     } else {
