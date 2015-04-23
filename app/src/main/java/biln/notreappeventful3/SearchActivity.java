@@ -367,10 +367,10 @@ public class SearchActivity extends MyMenu implements View.OnClickListener, Sele
         }
 
 
-        dbh = DBHelper.getInstance(this);
+        dbh = new DBHelper(this);
         db = dbh.getWritableDatabase();
         dbh.cleanLastAdvancedSearch(db);
-        dbh.close();
+
 
         Intent intent = new Intent(this, SearchResults.class);
         Bundle b = new Bundle();

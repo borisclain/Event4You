@@ -34,7 +34,7 @@ public class ServiceSearchAndPopulate extends IntentService{
 
 
         EventfulAPI web = new EventfulAPI();
-        DBHelper dbh = DBHelper.getInstance(this); //getApplicationContext si ça ne fonctionne pas
+        DBHelper dbh = new DBHelper(this); //getApplicationContext si ça ne fonctionne pas
         SQLiteDatabase db = dbh.getWritableDatabase();
 
         //message de debut
@@ -43,6 +43,7 @@ public class ServiceSearchAndPopulate extends IntentService{
         this.sendBroadcast(in);
 
         if(intent.getBooleanExtra("populateSuggestedList", false)) {
+
             Log.d("Service", "ON FAIT UNE RECHERCHE WEB DE SUGGESTIONS");
             populateSuggestedList(web, db);
             in = new Intent("biln.notreappeventful3.BUSY");
@@ -78,8 +79,11 @@ public class ServiceSearchAndPopulate extends IntentService{
             val.put(DBHelper.C_DATE_START, web.eventsFound.get(i).date_start);
             val.put(DBHelper.C_DATE_STOP, web.eventsFound.get(i).date_stop);
             val.put(DBHelper.C_LOCATION, web.eventsFound.get(i).location);
+            val.put(DBHelper.C_ADDRESS, web.eventsFound.get(i).address);
             val.put(DBHelper.C_DESCRIPTION, web.eventsFound.get(i).description);
             val.put(DBHelper.C_SUGGESTION, 1);
+
+            Log.d("ServiceSearchAndPop ", " address récupérée de EventFulApi " + web.eventsFound.get(i).address);
 
             db.update(DBHelper.TABLE_EVENTS, val, "_id_from_eventful = \""+web.eventsFound.get(i).idFromEventful+"\"", null);
             db.insertWithOnConflict(DBHelper.TABLE_EVENTS, null, val, SQLiteDatabase.CONFLICT_IGNORE);
@@ -96,6 +100,7 @@ public class ServiceSearchAndPopulate extends IntentService{
             val.put(DBHelper.C_DATE_START, web.eventsFound.get(i).date_start);
             val.put(DBHelper.C_DATE_STOP, web.eventsFound.get(i).date_stop);
             val.put(DBHelper.C_LOCATION, web.eventsFound.get(i).location);
+            val.put(DBHelper.C_ADDRESS, web.eventsFound.get(i).address);
             val.put(DBHelper.C_DESCRIPTION, web.eventsFound.get(i).description);
             val.put(DBHelper.C_ADVSEARCH, 1);
 

@@ -59,7 +59,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="@string/start"
+            android:text="@string/startDebut"
             android:id="@+id/debut_event"
             android:textStyle="bold"
             android:layout_weight="0.1" />

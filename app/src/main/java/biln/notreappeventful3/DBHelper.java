@@ -17,10 +17,10 @@ import java.util.Calendar;
 //static
 public class DBHelper extends SQLiteOpenHelper {
 
-    private static DBHelper mInstance = null;
+    //private static DBHelper mInstance = null;
 
     static final String DB_NAME = "eventful.db";
-    static final int DB_VERSION = 151;                   //TODO Important pour le développement
+    static final int DB_VERSION = 160;                   //TODO Important pour le développement
 
     static final String TABLE_EVENTS = "events";
     static final String C_ID = "_id";
@@ -29,21 +29,22 @@ public class DBHelper extends SQLiteOpenHelper {
     static final String C_DATE_START ="date_start";
     static final String C_DATE_STOP = "date_stop";
     static final String C_LOCATION ="location";
+    static final String C_ADDRESS = "address";
     static final String C_DESCRIPTION = "description";
     static final String C_SUGGESTION = "isSuggestion";
     static final String C_ADVSEARCH = "isAdvSearch";  // 1 si l'événement est nouveau, 0 sinon
     static final String C_FAVORITE = "favorite";
 
-
+/*
     public static DBHelper getInstance(Context ctx){
         if(mInstance == null){
             mInstance = new DBHelper(ctx.getApplicationContext());
         }
         return mInstance;
     }
+*/
 
-
-    private DBHelper(Context context) {
+    public DBHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
 
@@ -56,6 +57,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 +C_DATE_START+" text,"
                 +C_DATE_STOP+" text,"
                 +C_LOCATION+" text,"
+                +C_ADDRESS+" text,"
                 +C_DESCRIPTION+" text,"
                 +C_SUGGESTION+" integer default 0,"
                 +C_ADVSEARCH+" integer default 0,"
@@ -63,6 +65,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 "UNIQUE "+"("+C_ID_FROM_EVENTFUL+")"+" ON CONFLICT IGNORE)";
         db.execSQL(sql);
         Log.d("DB", "DB created");
+
+        Log.d("DB","onCreate");
     }
 
 

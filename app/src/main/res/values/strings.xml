@@ -16,6 +16,11 @@
 
 
 
+    <string name="lieuFirstScreen">Entrez votre localisation...</string>
+    <string name="bouton_validation">Allons-y ! </string>
+
+    <string name="first_screen_1st">Pour commencer</string>
+    <string name="texto_intro">Indiquez-nous votre localisation pour la suggestion d\'évènements proches de chez vous </string>
     <string name="cat_music">music</string>
     <string name="cat_conference">conference</string>
     <string name="cat_comedy">comedy</string>
@@ -90,8 +95,6 @@
     <string name="le_lieu">Lieu : </string>
     <string name="titre_vide">Test Titre </string>
 
-
-    <string name="first_screen_1st">Pour</string>
     <string name="first_screen_2nd">commencer...</string>
 
 

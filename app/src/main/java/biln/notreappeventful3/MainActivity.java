@@ -35,7 +35,7 @@ public class MainActivity extends MyMenu implements View.OnClickListener, Adapte
     ListView listv;
     MyAdapter adapter;
     SQLiteDatabase db;
-    static DBHelper dbh; //static DBHelper
+    DBHelper dbh; //static DBHelper
     BusyReceiver busyR;
     IntentFilter filter;
 
@@ -51,7 +51,7 @@ public class MainActivity extends MyMenu implements View.OnClickListener, Adapte
         SharedPreferences mySettings = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         city = mySettings.getString("myCity", "Montreal"); //valeur par défaut : Montreal
 
-        dbh = DBHelper.getInstance(this);
+        dbh = new DBHelper(this);
         db = dbh.getWritableDatabase();
 
         Cursor c = DBHelper.listEvents(db);
@@ -89,8 +89,6 @@ public class MainActivity extends MyMenu implements View.OnClickListener, Adapte
     @Override
     public void onStop(){
         super.onStop();
-        //adapter.getCursor().close();
-        //dbh.close();
     }
 
     @Override
@@ -128,10 +126,12 @@ public class MainActivity extends MyMenu implements View.OnClickListener, Adapte
 
         Cursor c = dbh.getEventByID(db, viewID);
         b.putString("title", c.getString(c.getColumnIndex(DBHelper.C_TITLE)) );
-        b.putString("location", c.getString(c.getColumnIndex(DBHelper.C_LOCATION)) );
+        b.putString("address", c.getString(c.getColumnIndex(DBHelper.C_ADDRESS)) );
         b.putString("startT", c.getString(c.getColumnIndex(DBHelper.C_DATE_START)) );
         b.putString("description", c.getString(c.getColumnIndex(DBHelper.C_DESCRIPTION)) );
         b.putString("eventfulID", c.getString(c.getColumnIndex(DBHelper.C_ID_FROM_EVENTFUL)));
+        b.putString("ID", c.getString(c.getColumnIndex(DBHelper.C_ID)));
+        b.putInt("favori", c.getInt(c.getColumnIndex(DBHelper.C_FAVORITE)));
 
         intent.putExtras(b);
         startActivity(intent);
@@ -194,8 +194,8 @@ public class MainActivity extends MyMenu implements View.OnClickListener, Adapte
             int id= c.getInt(c.getColumnIndex(DBHelper.C_ID));
 
             // Format des dates
-            DateFormat dateFormatFinal= new SimpleDateFormat("dd MMM yyyy hh:mm");
-            DateFormat dateFormatIni= new SimpleDateFormat("yyyy-MM-dd hh:mm");
+            DateFormat dateFormatFinal= new SimpleDateFormat("dd MMM yyyy HH:mm");
+            DateFormat dateFormatIni= new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
 
             String dateDebut = c.getString(c.getColumnIndex(DBHelper.C_DATE_START));
@@ -205,6 +205,8 @@ public class MainActivity extends MyMenu implements View.OnClickListener, Adapte
                 String newDate1 = dateFormatFinal.format(dateOld1);
                 dateDebut = newDate1;
 
+
+                Log.d("TRY et la dateFin = " , ""+dateFin);
                 if (!(dateFin == "2030-01-01")){
                     Date dateOld2 = dateFormatIni.parse(dateFin);
                     String newDate2 = dateFormatFinal.format(dateOld2);

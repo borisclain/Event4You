@@ -58,7 +58,7 @@ public class SearchResults extends MyMenu implements View.OnClickListener, Adapt
         SharedPreferences mySettings = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         city = mySettings.getString("myCity", "Montreal"); //valeur par défaut : Montreal
 
-        dbh = DBHelper.getInstance(this);
+        dbh = new DBHelper(this);
         db = dbh.getWritableDatabase();
 
         Cursor c = DBHelper.listSearchedEvents(db);
@@ -109,8 +109,8 @@ public class SearchResults extends MyMenu implements View.OnClickListener, Adapt
     @Override
     public void onStop(){
         super.onStop();
-        adapter.getCursor().close();
-        dbh.close();
+        //adapter.getCursor().close();
+        //dbh.close();
     }
 
 
@@ -202,9 +202,11 @@ public class SearchResults extends MyMenu implements View.OnClickListener, Adapt
             c.moveToPosition(position);
             int id= c.getInt(c.getColumnIndex(DBHelper.C_ID));
 
+
             // Format des dates
-            DateFormat dateFormatFinal= new SimpleDateFormat("dd MMM yyyy hh:mm");
-            DateFormat dateFormatIni= new SimpleDateFormat("yyyy-MM-dd hh:mm");
+            DateFormat dateFormatFinal= new SimpleDateFormat("dd MMM yyyy HH:mm");
+            DateFormat dateFormatIni= new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
 
             String dateDebut = c.getString(c.getColumnIndex(DBHelper.C_DATE_START));
             String dateFin = c.getString(c.getColumnIndex(DBHelper.C_DATE_STOP));
@@ -213,7 +215,9 @@ public class SearchResults extends MyMenu implements View.OnClickListener, Adapt
                 String newDate1 = dateFormatFinal.format(dateOld1);
                 dateDebut = newDate1;
 
-                if (!(dateFin == "2030-01-01")){
+
+                Log.d("TRY et la dateFin = " , ""+dateFin);
+                if (!(dateFin.equals("2030-01-01"))){
                     Date dateOld2 = dateFormatIni.parse(dateFin);
                     String newDate2 = dateFormatFinal.format(dateOld2);
                     dateFin = newDate2;
@@ -225,7 +229,7 @@ public class SearchResults extends MyMenu implements View.OnClickListener, Adapt
             }
 
             //TODO: enlever "id supposé"
-            title.setText(c.getString(c.getColumnIndex(DBHelper.C_TITLE))+ " id : "+id);
+            title.setText(c.getString(c.getColumnIndex(DBHelper.C_TITLE)));
             location.setText(c.getString(c.getColumnIndex(DBHelper.C_LOCATION)));
             startT.setText(dateDebut);
             stopT.setText(dateFin);

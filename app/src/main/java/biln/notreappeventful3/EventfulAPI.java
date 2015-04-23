@@ -47,8 +47,7 @@ class EventfulAPI {
 
 
     public void getNextEvents(String city){
-        String query = url+"&location="+city+"&sort_order=date"+"&page_size=100"; //+"c="
-        //nécessaire de faire sort_order par popularity car sinon les pages d'Eventful sont folles
+        String query = url+"&location="+city+"&sort_order=date"+"&page_size=100";
         getEvents(query);
     }
 
@@ -128,7 +127,27 @@ class EventfulAPI {
                 Log.d("WEB", "Nombre d'événements: " + event.length());
 
                 for (int j = 0; j < event.length(); j++) {
+
                     JSONObject item = event.getJSONObject(j);
+
+                    String adresse = "";
+
+                    if (!(item.getString("venue_name")=="null"))
+                        adresse = item.getString("venue_name");
+                    if (!(item.getString("venue_address")=="null"))
+                        adresse = adresse + ", "+item.getString("venue_address");
+                    if (!(item.getString("city_name")=="null"))
+                        adresse = adresse + ", "+item.getString("city_name");
+                    if (!(item.getString("postal_code")=="null"))
+                        adresse = adresse + " "+item.getString("postal_code");
+                    if (!(item.getString("country_name")=="null"))
+                        adresse = adresse + " "+item.getString("country_name");
+                    if (adresse == "")
+                        adresse = item.getString("latitude")+","+item.getString("longitude");
+
+                    Log.d("EventfulAPI ", " adresse = " + adresse);
+
+
                     //Si la valeur sous "stop_time" est null
                     if (item.isNull("stop_time")) {
                         eventsFound.add(new Event(item.getString("id"),
@@ -136,14 +155,16 @@ class EventfulAPI {
                                                         item.getString("start_time"),
                                                             "2030-01-01",//TODO Important
                                                                 item.getString("city_name"),
-                                                                    item.getString("description")));
+                                                                    adresse,
+                                                                        item.getString("description")));
                     } else {
                         eventsFound.add(new Event(item.getString("id"),
                                                     item.getString("title"),
                                                         item.getString("start_time"),
                                                             item.getString("stop_time"),
                                                                 item.getString("city_name"),
-                                                                    item.getString("description")));
+                                                                    adresse,
+                                                                        item.getString("description")));
                     }
                 }
 
@@ -197,10 +218,15 @@ class EventfulAPI {
             if(!(category.length()== 0)){
                 for(int i = 0; i<category.length(); i++){
                     JSONObject item = category.getJSONObject(i);
-                    s = s + " ; " + item.getString("id");  // "name" music ; theatre
+                    if (i==0)
+                        s = s + item.getString("id");
+                    else
+                        s = s + " ; " + item.getString("id");  // "name" music ; theatre
                 }
 
             }
+            else
+                s = "Aucune catégorie définie";
 
             detailsList.add(s);
             detailsList.add(urlImage);

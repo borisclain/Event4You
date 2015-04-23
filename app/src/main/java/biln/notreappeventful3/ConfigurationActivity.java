@@ -1,71 +1,84 @@
 package biln.notreappeventful3;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
-import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
+import android.graphics.Typeface;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 /**
  * Created by Boris on 2015-03-14.
  */
-public class ConfigurationActivity extends ActionBarActivity implements ConnectionCallbacks, OnConnectionFailedListener, View.OnClickListener {
+
+public class ConfigurationActivity extends ActionBarActivity {
 
 
-    Button GoButton;
-    EditText editT;
 
 
-    protected void onCreate(Bundle savedInstanceState){
+
+    TextView texte_firstlauchn_1st ;
+    TextView texte_intro ;
+    ImageView localisation ;
+    Button bouton_validation ;
+    EditText editText_localisation ;
+
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.screen_on_first_opening);
-
-        GoButton = (Button)findViewById(R.id.GoButton);
-        editT = (EditText)findViewById(R.id.editT);
-        GoButton.setOnClickListener(this);
-    }
+        setContentView(R.layout.config_layout);
 
 
+        texte_firstlauchn_1st = (TextView) findViewById(R.id.text_first_screen1st) ;
+        texte_intro = (TextView) findViewById(R.id.texte_intro) ;
+        localisation = (ImageView) findViewById(R.id.localisation);
+        bouton_validation = (Button)findViewById(R.id.bouton_validation);
+        editText_localisation = (EditText)findViewById(R.id.edit_text_localisation) ;
 
-    public void onClick(View v){
-        SharedPreferences.Editor edit = Launcher.settings.edit();
-        edit.putString("myCity", editT.getText().toString());
-        edit.commit();
+        // repertoire de la police
+        String fontPath = "assets/fonts/Raleway-Regular.ttf";
+        String fontPath2 = "assets/fonts/Raleway-Bold.ttf";
+        String fontPath3 = "assets/fonts/Raleway-LightItalic.ttf";
 
-        Intent i = new Intent(this, MainActivity.class);
-        startActivity(i);
-        finish();
+        //application de la police
+        Typeface ma_police = Typeface.createFromAsset(getAssets(), fontPath);
+        Typeface ma_police2 = Typeface.createFromAsset(getAssets(), fontPath2);
+        Typeface ma_police3 = Typeface.createFromAsset(getAssets(), fontPath3);
+
+        texte_firstlauchn_1st.setTypeface(ma_police);
+        texte_intro.setTypeface(ma_police) ;
+        editText_localisation.setTypeface(ma_police3);
+        bouton_validation.setTypeface(ma_police2);
+
+
     }
 
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-    }
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
 
-    @Override
-    public void onConnected(Bundle connectionHint) {
-    }
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
 
-    @Override
-    public void onConnectionSuspended(int cause) {
+        return super.onOptionsItemSelected(item);
     }
-
-    @Override
-    public void onConnectionFailed(ConnectionResult result) {
-    }
-
 }

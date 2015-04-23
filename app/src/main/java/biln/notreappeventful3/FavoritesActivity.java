@@ -18,6 +18,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created by Fleur de Lotus on 20/03/2015.
  */
@@ -37,7 +42,7 @@ public class FavoritesActivity extends MyMenu implements View.OnClickListener, A
         title.setText("Mes Favoris:");
 
         //dbh = new DBHelper(this)
-        dbh = MainActivity.dbh;
+        dbh =  new DBHelper(this);
         db = dbh.getWritableDatabase();
         Cursor c = DBHelper.listFavoris(db);
         adapter = new MyAdapter(this, c);
@@ -142,12 +147,35 @@ public class FavoritesActivity extends MyMenu implements View.OnClickListener, A
                 TextView location = (TextView) v.findViewById(R.id.location);
                 //étoile sur évenement
 
+                //Format des dates
+                DateFormat dateFormatFinal= new SimpleDateFormat("dd MMM yyyy HH:mm");
+                DateFormat dateFormatIni= new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+
+                String dateDebut = c.getString(c.getColumnIndex(DBHelper.C_DATE_START));
+                String dateFin = c.getString(c.getColumnIndex(DBHelper.C_DATE_STOP));
+                try {
+                    Date dateOld1 = dateFormatIni.parse(dateDebut);
+                    String newDate1 = dateFormatFinal.format(dateOld1);
+                    dateDebut = newDate1;
+
+                    if (!(dateFin == "2030-01-01")){
+                        Date dateOld2 = dateFormatIni.parse(dateFin);
+                        String newDate2 = dateFormatFinal.format(dateOld2);
+                        dateFin = newDate2;
+                    }else{
+                        dateFin = "inconnue";
+                    }
+                }catch(ParseException e){
+                    e.printStackTrace();
+                }
+
                 //selection des favoris dans la bdd
                 Log.d("selection favorite ", favorite + " id : " + id);
                 title.setText(c.getString(c.getColumnIndex(DBHelper.C_TITLE)) + " id supposé : " + id);
                 location.setText(c.getString(c.getColumnIndex(DBHelper.C_LOCATION)));
-                startT.setText(c.getString(c.getColumnIndex(DBHelper.C_DATE_START)));
-                stopT.setText(c.getString(c.getColumnIndex(DBHelper.C_DATE_STOP)));
+                startT.setText(dateDebut);
+                stopT.setText(dateFin);
             }
 
             // Gestion de l'étoile de l'événement
