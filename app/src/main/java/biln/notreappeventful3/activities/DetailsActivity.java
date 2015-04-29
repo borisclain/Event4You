@@ -58,7 +58,9 @@ public class DetailsActivity extends MyMenu implements View.OnClickListener{
         location = (TextView) findViewById(R.id.event_location);
         startT = (TextView) findViewById(R.id.event_datestart);
         stopT = (TextView) findViewById(R.id.event_datestop);
+
         description = (TextView) findViewById(R.id.event_description);
+
         categories = (TextView) findViewById(R.id.event_categories);
         image = (ImageView) findViewById(R.id.event_image);
         map = (ImageButton)findViewById(R.id.button_map);
@@ -73,11 +75,17 @@ public class DetailsActivity extends MyMenu implements View.OnClickListener{
         stopT.setText(b.getString("stopT"));
         location.setText(b.getString("address"));
 
-        if (b.getString("description").isEmpty() || b.getString("description")==null)  // description
+        if (b.getString("description").isEmpty() || b.getString("description").equals("null") || b.getString("description")==null)  // description
             description.setText("Pas de description disponible");
         else {
             Document doc = Jsoup.parse(b.getString("description"));
-            description.setText(doc.body().text());
+            if(doc.body().text().isEmpty() || doc.body().text().equals("null") || doc.body().text() == null){
+                Log.d("Doc.body", " "+doc.body().text());
+                description.setText("Pas de description disponible");
+            }
+            else{
+                description.setText(doc.body().text());
+            }
         }
         // Affichage de l'image
         String param = b.getString("eventfulID");
