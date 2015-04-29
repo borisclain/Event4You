@@ -1,19 +1,14 @@
-package biln.notreappeventful3;
+package biln.notreappeventful3.activities;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,8 +24,12 @@ import org.jsoup.nodes.Document;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
+
+import biln.notreappeventful3.R;
+import biln.notreappeventful3.menu.MyMenu;
+import biln.notreappeventful3.utils.DBHelper;
+import biln.notreappeventful3.utils.EventfulAPI;
 
 
 /**
@@ -44,20 +43,17 @@ public class DetailsActivity extends MyMenu implements View.OnClickListener{
     TextView stopT;
     TextView description;
     TextView categories;
-    TextView imageUrl;
     ImageView image;
-    Button map;
-    CheckBox favoris;
+    ImageButton map;
+    TextView date_debut;
+    TextView date_fin;
     DBHelper dbh;
     SQLiteDatabase db;
 
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_details);
 
-        setContentView(R.layout.event_description);
-
-        // Communication avec les éléments de event_descriptions.xml
         title = (TextView) findViewById(R.id.event_title);
         location = (TextView) findViewById(R.id.event_location);
         startT = (TextView) findViewById(R.id.event_datestart);
@@ -65,27 +61,24 @@ public class DetailsActivity extends MyMenu implements View.OnClickListener{
         description = (TextView) findViewById(R.id.event_description);
         categories = (TextView) findViewById(R.id.event_categories);
         image = (ImageView) findViewById(R.id.event_image);
-        favoris = (CheckBox) findViewById(R.id.button_favoris);
-        map = (Button) findViewById(R.id.button_map);
+        map = (ImageButton)findViewById(R.id.button_map);
+        date_debut = (TextView)findViewById(R.id.texte_debut);
+        date_fin = (TextView)findViewById(R.id.texte_fin);
 
         // Initialisation des éléments
         Bundle b = getIntent().getExtras();  //favoris
-        Boolean fav = false;
-        if (b.getInt("favori")==1)
-            fav = true;
-        favoris.setChecked(fav);
+
         title.setText(b.getString("title"));
         startT.setText(b.getString("startT"));
         stopT.setText(b.getString("stopT"));
         location.setText(b.getString("address"));
 
-        if (b.getString("description")==null)  // description
+        if (b.getString("description").isEmpty() || b.getString("description")==null)  // description
             description.setText("Pas de description disponible");
         else {
             Document doc = Jsoup.parse(b.getString("description"));
             description.setText(doc.body().text());
         }
-
         // Affichage de l'image
         String param = b.getString("eventfulID");
         Log.d("DetailsActivityLena", "Le ID =" + param);
@@ -93,28 +86,9 @@ public class DetailsActivity extends MyMenu implements View.OnClickListener{
 
         map.setOnClickListener(this);
 
-        // changement statut favori
-        String id = b.getString("ID");
-        Log.d("favoris","id : "+id);
-
-        dbh = new DBHelper(this); // dbh = new DBHelper(this);
+        dbh = new DBHelper(this);
         db = dbh.getWritableDatabase();
-
-        favoris.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                int id = ((Integer) buttonView.getTag()).intValue();
-                //Toast.makeText(getApplicationContext(), "Retiré des favoris ", Toast.LENGTH_SHORT).show();
-                Log.d("Listener", "Checked " + isChecked + " " + " " + id);
-                dbh.changeFavoriteStatus(db, id);//(int)getItemId(pos)
-            }
-        });
-
-        favoris.setTag(new Integer((Integer.parseInt(id))));
-
     }
-
 
 
     public void onClick(View v) {
@@ -162,14 +136,7 @@ public class DetailsActivity extends MyMenu implements View.OnClickListener{
         catch(IOException e) {
             return null;
         }
-
     }
-
-    /*protected Cursor doInBackground(String... params) {
-        ArrayList event_details = new ArrayList();
-        EventfulAPI web = new EventfulAPI();
-        event_details = web.getEventDetails("E0-001-081672548-8");
-    }*/
 
     private class MyAsyncTask extends AsyncTask<String, String, ArrayList<String>> {
 

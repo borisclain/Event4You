@@ -1,17 +1,16 @@
-package biln.notreappeventful3;
+package biln.notreappeventful3.activities;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-
 /**
  * Created by Boris on 2015-03-18.
  */
-public class Launcher extends Activity{
+public class LauncherActivity extends Activity{
 
-    public static SharedPreferences settings;
+    SharedPreferences settings;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,23 +19,21 @@ public class Launcher extends Activity{
 
         if(hasLoggedIn)
         {
-            Intent i = new Intent(this, MainActivity.class);
-            startActivity(i);
+            Intent intent = new Intent(this, MainActivity.class);
+            settings = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+            SharedPreferences.Editor edit = settings.edit();
+            edit.putBoolean("First call in app run", true);
+            edit.commit();
+            startActivity(intent);
             finish();
         }
-        else
-        {
-            SharedPreferences.Editor edit = Launcher.settings.edit();
+        else{
+            SharedPreferences.Editor edit = settings.edit();
             edit.putBoolean("hasLoggedIn", Boolean.TRUE);
             edit.commit();
             Intent i = new Intent(this, ConfigurationActivity.class);
             startActivity(i);
             finish();
         }
-
     }
-
-
 }
-
-

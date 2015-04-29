@@ -1,4 +1,4 @@
-package biln.notreappeventful3;
+package biln.notreappeventful3.menu;
 
 /**
  * Created by Boris on 2015-03-26.
@@ -8,6 +8,11 @@ import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import biln.notreappeventful3.R;
+import biln.notreappeventful3.activities.FavoritesActivity;
+import biln.notreappeventful3.activities.MainActivity;
+import biln.notreappeventful3.activities.SearchActivity;
 
 /**
  * Created by Boris on 2015-03-26.
@@ -19,6 +24,8 @@ public class MyMenu extends ActionBarActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item){

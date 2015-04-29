@@ -1,4 +1,4 @@
-package biln.notreappeventful3;
+package biln.notreappeventful3.utils;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -19,21 +19,21 @@ public class DBHelper extends SQLiteOpenHelper {
 
     //private static DBHelper mInstance = null;
 
-    static final String DB_NAME = "eventful.db";
-    static final int DB_VERSION = 160;                   //TODO Important pour le développement
+    public static final String DB_NAME = "eventful.db";
+    public static final int DB_VERSION = 206;
 
-    static final String TABLE_EVENTS = "events";
-    static final String C_ID = "_id";
-    static final String C_ID_FROM_EVENTFUL = "_id_from_eventful";
-    static final String C_TITLE ="title";
-    static final String C_DATE_START ="date_start";
-    static final String C_DATE_STOP = "date_stop";
-    static final String C_LOCATION ="location";
-    static final String C_ADDRESS = "address";
-    static final String C_DESCRIPTION = "description";
-    static final String C_SUGGESTION = "isSuggestion";
-    static final String C_ADVSEARCH = "isAdvSearch";  // 1 si l'événement est nouveau, 0 sinon
-    static final String C_FAVORITE = "favorite";
+    public static final String TABLE_EVENTS = "events";
+    public static final String C_ID = "_id";
+    public static final String C_ID_FROM_EVENTFUL = "_id_from_eventful";
+    public static final String C_TITLE ="title";
+    public static final String C_DATE_START ="date_start";
+    public static final String C_DATE_STOP = "date_stop";
+    public static final String C_LOCATION ="location";
+    public static final String C_ADDRESS = "address";
+    public static final String C_DESCRIPTION = "description";
+    public static final String C_SUGGESTION = "isSuggestion";
+    public static final String C_ADVSEARCH = "isAdvSearch";  // 1 si l'événement est nouveau, 0 sinon
+    public static final String C_FAVORITE = "favorite";
 
 /*
     public static DBHelper getInstance(Context ctx){
@@ -118,19 +118,19 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public static Cursor listEvents(SQLiteDatabase db){
         //" where "+C_NEW+ " = "+1+
-        Cursor c = db.rawQuery("select * from " + TABLE_EVENTS +" order by " + C_DATE_STOP + " asc", null);
+        Cursor c = db.rawQuery("select * from " + TABLE_EVENTS +" where "+C_SUGGESTION+" = "+1+ " order by " + C_DATE_START+ " asc", null);
         Log.d("DB","liste events nb = "+c.getCount());
         return c;
     }
 
     public static Cursor listFavoris(SQLiteDatabase db){
-        Cursor c = db.rawQuery("select * from "+TABLE_EVENTS+" where "+C_FAVORITE+" = "+1+ " order by " + C_DATE_STOP + " asc", null);
-        Log.d("DB","liste favoris nb = "+c.getCount());
+        Cursor c = db.rawQuery("select * from "+TABLE_EVENTS+" where "+C_FAVORITE+" = "+1+ " order by " + C_DATE_START + " asc", null);
+        Log.d("DB NbFavoris:"," "+c.getCount());
         return c;
     }
 
     public static Cursor listSearchedEvents(SQLiteDatabase db){
-        Cursor c = db.rawQuery("select * from " + TABLE_EVENTS +" where "+C_ADVSEARCH+" = "+1+ " order by " + C_DATE_STOP + " asc", null);
+        Cursor c = db.rawQuery("select * from " + TABLE_EVENTS +" where "+C_ADVSEARCH+" = "+1+ " order by " + C_DATE_START + " asc", null);
         Log.d("DB","liste events nb = "+c.getCount());
         return c;
     }
@@ -159,52 +159,21 @@ public class DBHelper extends SQLiteOpenHelper {
     public static void changeFavoriteStatus(SQLiteDatabase db, int id) {
         ContentValues val = new ContentValues();
         Cursor d = db.rawQuery("select * from "+TABLE_EVENTS+" where "+C_ID+" = "+id, null);
-        Log.d("DBQuery", " success");
-        Log.d("DBQuery", "ColumnIndex de favorite: "+d.getColumnIndex(C_FAVORITE));
         d.moveToFirst();
         int valFavorite = d.getInt(d.getColumnIndex(C_FAVORITE));
         Log.d("DBQuery", "valeur Favorite Success" + valFavorite);
-
         if (valFavorite == 0 ) {
-            Log.d("DBQUERY", "Success du if");
+            Log.d("DBQUERY", "Mise en favori");
             val.put(C_FAVORITE, 1);
-            //TODO le retirer de la listView
         }
         else {
-            Log.d("DBQUERY", "Success du else");
+            Log.d("DBQUERY", "Annulation du favori");
             val.put(C_FAVORITE, 0);
         }
         db.update(TABLE_EVENTS ,val, C_ID+" = "+id, null); //update l'élément dont on a récupéré le ID
     }
 
-    //TODO Revérifier que ces deux methodes sont bien la meme
-    /*
-        public static void changeFavoriteStatus(SQLiteDatabase db, int id) {
-        ContentValues val = new ContentValues();
-        Cursor d = db.rawQuery("select * from "+TABLE_EVENTS+" where "+C_ID+" = "+id, null);
 
-        //Log.d("DBQuery", " success " + d.getString(d.getColumnIndex(DBHelper.C_FAVORITE)));
-        Log.d("DBQuery", "ColumnIndex de favorite: "+d.getColumnIndex(C_FAVORITE));
-
-        d.moveToFirst();
-        int valFavorite = d.getInt(d.getColumnIndex(C_FAVORITE));
-        Log.d("DBQuery", "valeur Favorite Success : " + valFavorite);
-
-        if (valFavorite == 0 ) {
-            Log.d("DBQUERY", "Ajouté dans les favoris");
-            val.put(C_FAVORITE, 1);
-
-            // TODO le retirer de la listview
-        }
-        else {
-
-            Log.d("DBQUERY", "Retire des favoris");
-            val.put(C_FAVORITE, 0);
-            // TODO le retirer de la listview des favoris
-        }
-        db.update(TABLE_EVENTS ,val, C_ID+" = "+id, null); //update l'élément dont on a récupéré le ID
-    }
-     */
 
     /*
 

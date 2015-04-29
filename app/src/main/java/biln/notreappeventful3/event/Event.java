@@ -1,9 +1,9 @@
-package biln.notreappeventful3;
+package biln.notreappeventful3.event;
 
 /**
  * Created by Boris on 2015-03-16.
  */
-class Event {
+public class Event {
 
     public String idFromEventful;
     public String title;

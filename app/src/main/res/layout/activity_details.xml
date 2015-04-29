@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/scrollView2"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:weightSum="1"
+            android:layout_weight="0.98"
+            android:padding="10dp"
+            android:background="@drawable/contour_details">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/titre_event"
+                android:id="@+id/event_title"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center|center_horizontal"
+                android:textColor="#ff000000"
+                android:textSize="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="20dp" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/debut_details"
+                    android:id="@+id/texte_debut"
+                    android:textColor="#ff434343"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="10dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/date_debut_details"
+                    android:id="@+id/event_datestart"
+                    android:textColor="#ff434343"
+                    android:paddingLeft="10dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/fin_details"
+                    android:id="@+id/texte_fin"
+                    android:textColor="#ff434343"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="10dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/date_fin_details"
+                    android:id="@+id/event_datestop"
+                    android:textColor="#FF434343"
+                    android:paddingLeft="10dp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/adresse_details"
+                android:id="@+id/event_location"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
+                android:textColor="#FF434343"
+                android:paddingTop="10dp" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="128dp"
+                android:id="@+id/event_image"
+                android:layout_marginTop="15dp"
+                android:src="@drawable/image_missing"
+                android:layout_marginBottom="10dp"
+                android:layout_gravity="center_horizontal" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginBottom="5dp">
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/button_map"
+                    android:clickable="false"
+                    android:elegantTextHeight="false"
+                    android:background="#ffffff"
+                    android:src="@drawable/ma_maps"
+                    android:layout_marginRight="15dp"
+                    android:paddingLeft="11dp" />
+
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:id="@+id/event_categories"
+                android:layout_gravity="center_horizontal"
+                android:textColor="#FF434343"
+                android:password="false"
+                android:text="@string/categorie_details"
+                android:paddingLeft="10dp"
+                android:textSize="20dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="July 07, 2015 - July 19, 2015. An internationally acclaimed world music event, this 13-day festival features music from Africa, the West Indies, the Caribbean and Latin America. Don&apos;t miss these unique mega concerts and enjoy five days of free outdoor activities and shows for the whole family on the parterre of the Quartier des spectacles.  Site of event: Quartier des spectacles, Montréal, Québec, Canada. Many other locations in Montréal. Information : 514 499-9215, info@festivalnuitsdafrique.com, http://www.festivalnuitsdafrique.com/"
+                android:id="@+id/event_description"
+                android:textSize="17dp"
+                android:textColor="#ff000000"
+                android:paddingTop="20dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="10dp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

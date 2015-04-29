@@ -7,13 +7,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="barre de menu"
+        android:text="Détails"
+        android:textStyle="bold"
         android:id="@+id/menubar"
         android:layout_gravity="center_horizontal"
         android:phoneNumber="false"
         android:textAlignment="center"
         android:layout_weight="0.02"
-        android:background="#ff4686ff" />
+        android:background="#317A8A"
+        android:paddingLeft="10dp"/>
+
+
 
     <ScrollView
         android:layout_width="wrap_content"

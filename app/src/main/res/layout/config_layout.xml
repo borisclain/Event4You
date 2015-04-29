@@ -1,73 +1,74 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".FirstScreen"
     android:background="#317A8A"
-    android:paddingTop="20dp"
-    android:paddingLeft="20dp"
-    android:paddingRight="25dp">
+    android:padding="10dp">
+
 
     <TextView
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/first_screen_1st"
         android:id="@+id/text_first_screen1st"
         android:textColor="#ffffff"
-        android:textSize="43dp"
+        android:textSize="40dp"
         android:textIsSelectable="false"
-        android:layout_marginBottom="-140dp" />
+        android:paddingTop="20dp"
+        android:layout_weight="0.1" />
 
     <ImageView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/localisation"
-        android:src="@drawable/ecranaccueil2"
-        android:layout_marginTop="180dp"
-        android:layout_marginBottom="210dp"
-        android:layout_marginRight="100dp"
-        android:layout_marginLeft="100dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp" />
+        android:src="@drawable/localisation_tr"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:maxWidth="140dp"
+        android:maxHeight="170dp"
+        android:layout_gravity="center_horizontal" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="@string/texto_intro"
         android:id="@+id/texte_intro"
-        android:layout_marginTop="-180dp"
         android:textSize="20dp"
         android:gravity="center_horizontal"
         android:textColor="#ffffff"
-        android:layout_marginBottom="55dp" />
+        android:layout_marginTop="20dp"
+        android:layout_weight="0.1" />
 
     <EditText
         android:layout_width="fill_parent"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:id="@+id/edit_text_localisation"
-        android:hint="@string/lieuFirstScreen"
+        android:hint="@string/lieu"
         android:inputType="text"
         android:textStyle="italic"
-        android:background="@drawable/contour_ecran_accueil"
+        android:background="@drawable/mon_contour_premier_ecran"
         android:textColor="#ffffff"
         android:editable="true"
-        android:padding="10dp"
         android:textSize="20dp"
         android:ellipsize="start"
-        android:layout_marginBottom="15dp"
         android:textColorHint="#edeaea"
-        android:gravity="center" />
+        android:gravity="center"
+        android:maxLength="25"
+        android:password="false"
+        android:layout_marginBottom="10dp" />
 
     <Button
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
         android:text="@string/bouton_validation"
         android:id="@+id/bouton_validation"
         android:textColor="#317A8A"
-        android:background="@drawable/bouton_validation_non_appuye"
-        android:textSize="25dp"
+        android:background="@drawable/bouton_validation"
+        android:textSize="26dp"
         android:clickable="true" />
 
 

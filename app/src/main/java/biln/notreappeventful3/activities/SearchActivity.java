@@ -1,9 +1,11 @@
-package biln.notreappeventful3;
+package biln.notreappeventful3.activities;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -17,6 +19,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+
+import biln.notreappeventful3.utils.DBHelper;
+import biln.notreappeventful3.menu.MyMenu;
+import biln.notreappeventful3.R;
+import biln.notreappeventful3.dialogfragment.SelecteurDateDebut;
+import biln.notreappeventful3.dialogfragment.SelecteurDateFin;
 
 //version originale de Nassym: extends FragmentActivity
 
@@ -114,6 +122,7 @@ public class SearchActivity extends MyMenu implements View.OnClickListener, Sele
             Log.d("FORMATTAGE EDIT TEXT", "Erreur dans la définition du format de l'EditText. Message d'erreur : "+ e.getMessage()) ;
         }
     }
+
 
 
     public void affichage_datepicker_debut(View v) {
@@ -366,14 +375,24 @@ public class SearchActivity extends MyMenu implements View.OnClickListener, Sele
             Log.d("CATEGORIES: ", " "+cat);
         }
 
-
+        //Suppression des résultats de la dernière recherche avancée
         dbh = new DBHelper(this);
         db = dbh.getWritableDatabase();
         dbh.cleanLastAdvancedSearch(db);
+        db.close();
+        dbh.close();
 
 
-        Intent intent = new Intent(this, SearchResults.class);
+        String city = edit_text_lieu.getText().toString();
+        if (city.matches("")){
+            SharedPreferences mySettings = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+            city = mySettings.getString("myCity", "Montreal");
+            Log.d("VILLE EN PREF", " "+city);
+        }
+
+        Intent intent = new Intent(this, SearchResultsActivity.class);
         Bundle b = new Bundle();
+        b.putString("city", city);
         b.putInt("Called from Search Activity", 1);
         b.putString("dateS", dateS); // dateS = yyyyMMdd00 ou dateS = ""
         b.putString("dateT", dateT); // dateT = yyyyMMdd00 ou dateT = ""
@@ -381,10 +400,7 @@ public class SearchActivity extends MyMenu implements View.OnClickListener, Sele
         intent.putExtras(b);
         startActivity(intent);
 
-
     }
-
-
 
 
     @Override

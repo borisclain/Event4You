@@ -6,19 +6,22 @@
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="26dp"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textAppearance="?android:attr/textAppearanceLarge"
         android:id="@+id/title"
         android:text="Rechercher"
-        android:background="#2b9cabc2" />/>
+        android:textStyle="bold"
+        android:background="#317A8A"
+        android:elegantTextHeight="false"
+        android:paddingLeft="10dp"/>
 
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:id="@+id/activity"
-        android:weightSum="1"
+        android:weightSum="7"
         android:layout_alignParentTop="true"
         android:layout_alignParentBottom="true"
         android:baselineAligned="true"
@@ -29,20 +32,20 @@
 
 
 
-        // ts les EditText doivent avoir leur longeur de caractères limitée (différente selon l'editText considéré)
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/rechercher_date"
             android:id="@+id/rechercher_date"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:layout_weight="1" />
 
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:orientation="vertical" android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:weightSum="1"
             android:visibility="visible"
             android:id="@+id/linearlayaout_date"
@@ -50,7 +53,8 @@
             android:padding="10dp"
             android:layout_marginBottom="10dp"
             android:paddingLeft="12dp"
-            android:paddingRight="12dp">
+            android:paddingRight="12dp"
+            android:layout_weight="1">
 
 
             <EditText
@@ -60,7 +64,7 @@
                 android:editable="false"
                 android:inputType="date"
                 android:textStyle="italic"
-                android:layout_weight="0.7"
+                android:layout_weight="0.5"
                 android:layout_gravity="center_horizontal"
                 android:linksClickable="false"
                 android:textSize="13dp"
@@ -76,7 +80,7 @@
                 android:editable="false"
                 android:inputType="date"
                 android:textStyle="italic"
-                android:layout_weight="0.7"
+                android:layout_weight="0.5"
                 android:layout_gravity="center_horizontal"
                 android:linksClickable="false"
                 android:textSize="13dp"
@@ -89,24 +93,26 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/rechercher_lieu"
             android:id="@+id/rechercher_lieu"
             android:layout_gravity="center_horizontal"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:layout_weight="1" />
 
 
         <EditText
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:id="@+id/editText_lieu"
             android:hint="@string/lieu"
             android:inputType="text|textAutoComplete"
             android:textStyle="italic"
             android:background="@drawable/contour"
             android:padding="10dp"
-            android:layout_marginBottom="10dp" />
+            android:layout_marginBottom="10dp"
+            android:layout_weight="1" />
 
 
         // recherche par catégorie
@@ -117,7 +123,8 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/rechercher_categories"
             android:id="@+id/rechercher_categories"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:layout_weight="1" />
 
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -131,7 +138,8 @@
             android:longClickable="false"
             android:background="@drawable/contour"
             android:layout_marginTop="5dp"
-            android:layout_marginBottom="10dp">
+            android:layout_marginBottom="10dp"
+            android:layout_weight="1">
 
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="fill_parent"
@@ -175,8 +183,6 @@
                 <ImageButton
                     android:layout_width="20dp"
                     android:layout_height="wrap_content"
-
-
                     android:id="@+id/bouton_loisirs"
                     android:layout_weight="1"
                     android:onClick="bouton_loisirs"
@@ -354,7 +360,8 @@
             android:onClick="validation_filtrage"
             android:textSize="16sp"
             android:background="@drawable/bouton_filtrage"
-            android:textColor="#fffdfff3" />
+            android:textColor="#fffdfff3"
+            android:layout_weight="1" />
 
     </LinearLayout>
 

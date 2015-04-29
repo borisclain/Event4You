@@ -5,7 +5,4 @@
         android:state_pressed="true" />
 
     <item android:drawable="@drawable/bouton_validation_non_appuye" />
-
-
-
 </selector>

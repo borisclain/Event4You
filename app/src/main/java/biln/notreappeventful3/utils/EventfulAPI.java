@@ -1,4 +1,4 @@
-package biln.notreappeventful3;
+package biln.notreappeventful3.utils;
 
 
 import android.util.Log;
@@ -22,54 +22,48 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import biln.notreappeventful3.event.Event;
 
 /**
  * Created by Boris on 2015-03-10.
  */
-class EventfulAPI {
+public class EventfulAPI {
 
     ArrayList<Event> eventsFound;                                          //peuplé par la recherche
     String apiKey = "b5JxXhsHhJTW2mzP";
     String url = "http://api.eventful.com/json/events/search?app_key="+apiKey;
 
-
-
     public EventfulAPI(){
         eventsFound = new ArrayList<Event>();
     }
-
 
     /**
      * Trouve les événements qui s'en viennent dans la ville donnée en paramètre
      *
      * @param city
      */
-
-
     public void getNextEvents(String city){
-        String query = url+"&location="+city+"&sort_order=date"+"&page_size=100";
-        getEvents(query);
+        String query = url+"&location="+city+"&sort_order=popularity"+"&page_size=25";
+        getEvents(query, 1);
     }
 
-    public void getDesiredResults(String city, String dateStart, String dateStop, ArrayList<String> categories){
+    public void getDesiredResults(String city, String dateStart, String dateStop, ArrayList<String> categories, int p){
 
         List<NameValuePair> query = new ArrayList<NameValuePair>();
         //On ajoute le champs clé d'API
         query.add(new BasicNameValuePair("app_key", this.apiKey));
-
         //On ajoute le champ location
-        query.add(new BasicNameValuePair("location", city));
+        query.add(new BasicNameValuePair("l", city));
 
 
         //On ajoute le champs time
         String time;
-        if(dateStart == "" || dateStop == ""){
-            time = "future";
+        if(dateStart.matches("") || dateStop.matches("")){
         }
         else{
             time = dateStart + "-" + dateStop;
+            query.add(new BasicNameValuePair("t", time));
         }
-        query.add(new BasicNameValuePair("t", time));
 
         //On ajoute le champs category
         String catList;
@@ -86,25 +80,24 @@ class EventfulAPI {
             query.add(new BasicNameValuePair("category", catList));
         }
 
+        String order = "date";
+        query.add(new BasicNameValuePair("sort_order", order));
+        String size = "100";
+        query.add(new BasicNameValuePair("page_size", size));
+
         //On construit l'URL avec les champs
         String url = "http://api.eventful.com/json/events/search?" + URLEncodedUtils.format(query, HTTP.UTF_8);
         Log.d("ENCODAGE DE L'URL", url);
 
         //On fait l'appel de la page et la récolte
-        getEvents(url);
-        Log.d("EVENTFUL API, url : ", "" + url);
+        getEvents(url, p);
     }
 
 
-    /**
-     * Méthode utilitaire locale
-     *
-     * @param query
-     */
-    private void getEvents(String query){
+    public int getPageCount(String url){
         int page_count = 0;
         try{
-            HttpEntity page = getHttp(query);
+            HttpEntity page = getHttp(url);
             JSONObject js = new JSONObject(EntityUtils.toString(page, HTTP.UTF_8));
             page_count = Integer.parseInt(js.getString("page_count"));
         } catch (ClientProtocolException e) {
@@ -116,68 +109,73 @@ class EventfulAPI {
         } catch (JSONException e) {
             Log.d("JSON ","Erreur: "+e.getMessage());
         }
-        //int i = 0;
-        int i =  page_count - 1; //TODO ! Juste pour abréger ici on demande une seule page
-        while(i < page_count) {
-            try {
-                HttpEntity page = getHttp(query+"&page_number="+Integer.toString(i+1));
-                JSONObject js = new JSONObject(EntityUtils.toString(page, HTTP.UTF_8));
-                JSONObject events = js.getJSONObject("events");
-                JSONArray event = events.getJSONArray("event");
-                Log.d("WEB", "Nombre d'événements: " + event.length());
-
-                for (int j = 0; j < event.length(); j++) {
-
-                    JSONObject item = event.getJSONObject(j);
-
-                    String adresse = "";
-
-                    if (!(item.getString("venue_name")=="null"))
-                        adresse = item.getString("venue_name");
-                    if (!(item.getString("venue_address")=="null"))
-                        adresse = adresse + ", "+item.getString("venue_address");
-                    if (!(item.getString("city_name")=="null"))
-                        adresse = adresse + ", "+item.getString("city_name");
-                    if (!(item.getString("postal_code")=="null"))
-                        adresse = adresse + " "+item.getString("postal_code");
-                    if (!(item.getString("country_name")=="null"))
-                        adresse = adresse + " "+item.getString("country_name");
-                    if (adresse == "")
-                        adresse = item.getString("latitude")+","+item.getString("longitude");
-
-                    Log.d("EventfulAPI ", " adresse = " + adresse);
+        return page_count;
+    }
 
 
-                    //Si la valeur sous "stop_time" est null
-                    if (item.isNull("stop_time")) {
-                        eventsFound.add(new Event(item.getString("id"),
-                                                    item.getString("title"),
-                                                        item.getString("start_time"),
-                                                            "2030-01-01",//TODO Important
-                                                                item.getString("city_name"),
-                                                                    adresse,
-                                                                        item.getString("description")));
-                    } else {
-                        eventsFound.add(new Event(item.getString("id"),
-                                                    item.getString("title"),
-                                                        item.getString("start_time"),
-                                                            item.getString("stop_time"),
-                                                                item.getString("city_name"),
-                                                                    adresse,
-                                                                        item.getString("description")));
-                    }
+    /**
+     * Méthode utilitaire locale
+     *
+     * @param url
+     */
+    private void getEvents(String url, int p){
+        try {
+            HttpEntity page = getHttp(url+"page_number="+p);
+            JSONObject js = new JSONObject(EntityUtils.toString(page, HTTP.UTF_8));
+            JSONObject events = js.getJSONObject("events");
+            JSONArray event = events.getJSONArray("event");
+            Log.d("WEB", "Nombre d'événements: " + event.length());
+
+            for (int j = 0; j < event.length(); j++) {
+
+                JSONObject item = event.getJSONObject(j);
+
+                String adresse = "";
+
+                if (!(item.getString("venue_name")=="null"))
+                    adresse = item.getString("venue_name");
+                if (!(item.getString("venue_address")=="null"))
+                    adresse = adresse + ", "+item.getString("venue_address");
+                if (!(item.getString("city_name")=="null"))
+                    adresse = adresse + ", "+item.getString("city_name");
+                if (!(item.getString("postal_code")=="null"))
+                    adresse = adresse + " "+item.getString("postal_code");
+                if (!(item.getString("country_name")=="null"))
+                    adresse = adresse + " "+item.getString("country_name");
+                if (adresse == "")
+                    adresse = item.getString("latitude")+","+item.getString("longitude");
+
+                Log.d("EventfulAPI ", " adresse = " + adresse);
+
+
+                //Si la valeur sous "stop_time" est null
+                if (item.isNull("stop_time")) {
+                    eventsFound.add(new Event(item.getString("id"),
+                            item.getString("title"),
+                            item.getString("start_time"),
+                            "2030-01-01 00:00:00",
+                            item.getString("city_name"),
+                            adresse,
+                            item.getString("description")));
+                } else {
+                    eventsFound.add(new Event(item.getString("id"),
+                            item.getString("title"),
+                            item.getString("start_time"),
+                            item.getString("stop_time"),
+                            item.getString("city_name"),
+                            adresse,
+                            item.getString("description")));
                 }
-
-            } catch (ClientProtocolException e) {
-                Log.d("HTTP ", "Erreur: " + e.getMessage());
-            } catch (IOException e) {
-                Log.d("Web ", "Erreur: " + e.getMessage());
-            } catch (ParseException e) {
-                Log.d("Parse ", "Erreur: " + e.getMessage());
-            } catch (JSONException e) {
-                Log.d("JSON ", "Erreur: " + e.getMessage());
             }
-            i++;
+
+        } catch (ClientProtocolException e) {
+            Log.d("HTTP ", "Erreur: " + e.getMessage());
+        } catch (IOException e) {
+            Log.d("Web ", "Erreur: " + e.getMessage());
+        } catch (ParseException e) {
+            Log.d("Parse ", "Erreur: " + e.getMessage());
+        } catch (JSONException e) {
+            Log.d("JSON ", "Erreur: " + e.getMessage());
         }
     }
 

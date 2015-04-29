@@ -15,7 +15,6 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/titre_vide"
-        android:singleLine="true"
         android:id="@+id/title" />
 
     <LinearLayout
