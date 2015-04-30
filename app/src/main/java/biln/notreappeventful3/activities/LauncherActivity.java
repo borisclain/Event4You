@@ -3,8 +3,12 @@ package biln.notreappeventful3.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+
+import biln.notreappeventful3.utils.DBHelper;
+
 /**
  * Created by Boris on 2015-03-18.
  */
@@ -16,6 +20,10 @@ public class LauncherActivity extends Activity{
         super.onCreate(savedInstanceState);
         settings = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         boolean hasLoggedIn = settings.getBoolean("hasLoggedIn", false);
+        DBHelper dbh = new DBHelper(this);
+        SQLiteDatabase db = dbh.getWritableDatabase();
+        dbh.deletePassedEvents(db);
+        dbh.close();
 
         hasLoggedIn = false; // TODO Enlever
 

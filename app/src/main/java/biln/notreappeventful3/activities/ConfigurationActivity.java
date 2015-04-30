@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.text.Normalizer;
 import java.util.List;
 
 import biln.notreappeventful3.R;
@@ -98,6 +99,8 @@ public class ConfigurationActivity extends Activity implements LocationListener,
                     } catch(InterruptedException ex) {
                         Thread.currentThread().interrupt();
                     }
+                    cityByLocalisation = Normalizer.normalize(cityByLocalisation, Normalizer.Form.NFD);
+                    cityByLocalisation = cityByLocalisation.replaceAll("[^\\p{ASCII}]", "");
                     Toast.makeText(this, "Nous avons détecté " + cityByLocalisation + ". Est-ce exact?", Toast.LENGTH_LONG).show();
                     editText_localisation.setHint(cityByLocalisation);
                 }
@@ -147,6 +150,8 @@ public class ConfigurationActivity extends Activity implements LocationListener,
             finish();
         //Si l'usager a rentré quelque chose
         }else{
+            myCity = Normalizer.normalize(myCity, Normalizer.Form.NFD);
+            myCity = myCity.replaceAll("[^\\p{ASCII}]", "");
             settings = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
             SharedPreferences.Editor edit = settings.edit();
             edit.putString("myCity", myCity);

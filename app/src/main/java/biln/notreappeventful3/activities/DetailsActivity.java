@@ -24,7 +24,11 @@ import org.jsoup.nodes.Document;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import biln.notreappeventful3.R;
 import biln.notreappeventful3.menu.MyMenu;
@@ -58,9 +62,7 @@ public class DetailsActivity extends MyMenu implements View.OnClickListener{
         location = (TextView) findViewById(R.id.event_location);
         startT = (TextView) findViewById(R.id.event_datestart);
         stopT = (TextView) findViewById(R.id.event_datestop);
-
         description = (TextView) findViewById(R.id.event_description);
-
         categories = (TextView) findViewById(R.id.event_categories);
         image = (ImageView) findViewById(R.id.event_image);
         map = (ImageButton)findViewById(R.id.button_map);
@@ -71,8 +73,29 @@ public class DetailsActivity extends MyMenu implements View.OnClickListener{
         Bundle b = getIntent().getExtras();  //favoris
 
         title.setText(b.getString("title"));
-        startT.setText(b.getString("startT"));
-        stopT.setText(b.getString("stopT"));
+
+        DateFormat dateFormatFinal= new SimpleDateFormat("dd MMM yyyy HH:mm");
+        DateFormat dateFormatIni= new SimpleDateFormat("yyyy-MM-dd HH:mm"); //M
+        String dateDebut = b.getString("startT");
+        String dateFin = b.getString("stopT");
+        try {
+            Date dateOld1 = dateFormatIni.parse(dateDebut);
+            String newDate1 = dateFormatFinal.format(dateOld1);
+            dateDebut = newDate1;
+            Log.d("dateFin en DB = ", "" + dateFin);
+            if (!(dateFin.equals("2030-01-01 00:00:00"))){
+                Date dateOld2 = dateFormatIni.parse(dateFin);
+                String newDate2 = dateFormatFinal.format(dateOld2);
+                dateFin = newDate2;
+            }else{
+                dateFin = "inconnue";
+            }
+        }catch(ParseException e){
+            e.printStackTrace();
+        }
+        startT.setText(dateDebut);
+        stopT.setText(dateFin);
+
         location.setText(b.getString("address"));
 
         if (b.getString("description").isEmpty() || b.getString("description").equals("null") || b.getString("description")==null)  // description

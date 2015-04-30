@@ -34,7 +34,7 @@ public class FavoritesActivity extends MyMenu implements View.OnClickListener, A
         TextView title = (TextView)findViewById(R.id.title);
         title.setText("Mes Favoris:");
 
-        //dbh = new DBHelper(this)
+
         dbh =  new DBHelper(this);
         db = dbh.getWritableDatabase();
 

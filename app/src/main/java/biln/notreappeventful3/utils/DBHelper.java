@@ -20,7 +20,7 @@ public class DBHelper extends SQLiteOpenHelper {
     //private static DBHelper mInstance = null;
 
     public static final String DB_NAME = "eventful.db";
-    public static final int DB_VERSION = 211;
+    public static final int DB_VERSION = 213;
 
     public static final String TABLE_EVENTS = "events";
     public static final String C_ID = "_id";
@@ -71,7 +71,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
 
-    //TODO : Tester de fond en combe la méthode suivante et trouver le meilleur moment pour l'appeler
     /**
      * Dans la base de données, la colonne C_DATE_STOP contient sa valeur sous la forme d'un String:
      * ISO 8601 comme ceci: "2005-03-01 19:00:00"
@@ -79,14 +78,19 @@ public class DBHelper extends SQLiteOpenHelper {
      */
     public void deletePassedEvents(SQLiteDatabase db){
 
+        String sql = "DELETE from " + TABLE_EVENTS + " WHERE " + C_DATE_STOP + " <= date('now','+2 day')"; //TODO
+        db.execSQL(sql);
+
+        /*
         Calendar c = Calendar.getInstance();
-        System.out.println("Current time =&gt; "+c.getTime());
+        Log.d("Clean DB h", ""+ "Current time =&gt; "+c.getTime());
 
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         String today = df.format(c.getTime());
 
-        System.out.println("Aujourd'hui nous sommes le "+today);
-        db.execSQL("delete from "+TABLE_EVENTS+" where date("+C_DATE_STOP+") <"+today);
+        Log.d("Clean DB aujd", ""+ today);
+        db.execSQL("delete from "+TABLE_EVENTS+" where date("+C_DATE_STOP+") <="+today); //TODO
+        */
     }
 
 
