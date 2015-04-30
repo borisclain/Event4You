@@ -20,7 +20,7 @@ public class DBHelper extends SQLiteOpenHelper {
     //private static DBHelper mInstance = null;
 
     public static final String DB_NAME = "eventful.db";
-    public static final int DB_VERSION = 206;
+    public static final int DB_VERSION = 211;
 
     public static final String TABLE_EVENTS = "events";
     public static final String C_ID = "_id";

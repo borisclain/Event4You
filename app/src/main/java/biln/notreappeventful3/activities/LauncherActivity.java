@@ -17,6 +17,8 @@ public class LauncherActivity extends Activity{
         settings = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         boolean hasLoggedIn = settings.getBoolean("hasLoggedIn", false);
 
+        hasLoggedIn = false; // TODO Enlever
+
         if(hasLoggedIn)
         {
             Intent intent = new Intent(this, MainActivity.class);

@@ -31,7 +31,7 @@ public class EventfulAPI {
 
     ArrayList<Event> eventsFound;                                          //peuplé par la recherche
     String apiKey = "b5JxXhsHhJTW2mzP";
-    String url = "http://api.eventful.com/json/events/search?app_key="+apiKey;
+    //String url = "http://api.eventful.com/json/events/search?app_key="+apiKey;
 
     public EventfulAPI(){
         eventsFound = new ArrayList<Event>();
@@ -43,16 +43,22 @@ public class EventfulAPI {
      * @param city
      */
     public void getNextEvents(String city){
-        String query = url+"&location="+city+"&sort_order=popularity"+"&page_size=25";
-        getEvents(query, 1);
+        Log.d("Query ville ", ""+city);
+        List<NameValuePair> query = new ArrayList<NameValuePair>();
+        query.add(new BasicNameValuePair("app_key", this.apiKey));
+        query.add(new BasicNameValuePair("location", city));
+        query.add(new BasicNameValuePair("sort_order", "popularity"));
+        query.add(new BasicNameValuePair("page_size", "25"));
+
+        String url = "http://api.eventful.com/json/events/search?" + URLEncodedUtils.format(query, HTTP.UTF_8);
+        Log.d("Query Encode ", ""+url);
+        getEvents(url, 1);
     }
 
     public void getDesiredResults(String city, String dateStart, String dateStop, ArrayList<String> categories, int p){
 
         List<NameValuePair> query = new ArrayList<NameValuePair>();
-        //On ajoute le champs clé d'API
         query.add(new BasicNameValuePair("app_key", this.apiKey));
-        //On ajoute le champ location
         query.add(new BasicNameValuePair("l", city));
 
 
@@ -88,7 +94,6 @@ public class EventfulAPI {
         //On construit l'URL avec les champs
         String url = "http://api.eventful.com/json/events/search?" + URLEncodedUtils.format(query, HTTP.UTF_8);
         Log.d("ENCODAGE DE L'URL", url);
-
         //On fait l'appel de la page et la récolte
         getEvents(url, p);
     }
@@ -120,7 +125,9 @@ public class EventfulAPI {
      */
     private void getEvents(String url, int p){
         try {
+            Log.d("url final", ""+url+"page_number="+p);
             HttpEntity page = getHttp(url+"page_number="+p);
+
             JSONObject js = new JSONObject(EntityUtils.toString(page, HTTP.UTF_8));
             JSONObject events = js.getJSONObject("events");
             JSONArray event = events.getJSONArray("event");
