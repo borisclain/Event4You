@@ -48,11 +48,7 @@ public class SearchResultsActivity extends MyMenu implements View.OnClickListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.my_list_view);
-        TextView title = (TextView)findViewById(R.id.title);
-        title.setText("Résultats de la recherche");
 
-        //SharedPreferences mySettings = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        //city = mySettings.getString("myCity", "Montreal"); //valeur par défaut : Montreal
 
         dbh = new DBHelper(this);
         db = dbh.getWritableDatabase();

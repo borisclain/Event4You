@@ -2,32 +2,27 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
 
-    <item android:id="@+id/action_settings" android:title="@string/action_settings"
-        android:orderInCategory="100" app:showAsAction="never" />
-
-
-
     <item android:id="@+id/menuSuggestion"
         app:showAsAction="always"
-        android:title="Nos suggestions pour vous"
-        android:icon="@android:drawable/ic_menu_info_details" >
+        android:title="Évènements suggérés"
+        android:icon="@drawable/icone_liste" >
     </item>
 
 
 
     <item android:id="@+id/menuShowFavorites"
         app:showAsAction="always"
-        android:icon="@android:drawable/btn_star_big_off"
+        android:icon="@drawable/icone_favoris"
         android:checkable="true"
-        android:title="Mes favoris">
+        android:title="Favoris">
     </item>
 
 
 
     <item android:id="@+id/menuAdvancedSearch"
         app:showAsAction="always"
-        android:title="Recherche avancée"
-        android:icon="@android:drawable/ic_menu_search" >
+        android:title="Affinage de la recherche"
+        android:icon="@drawable/icone_filtrage" >
     </item>
 
 

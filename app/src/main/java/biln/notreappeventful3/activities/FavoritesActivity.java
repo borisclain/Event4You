@@ -9,8 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
+
 
 import biln.notreappeventful3.R;
 import biln.notreappeventful3.menu.MyMenu;
@@ -31,8 +30,7 @@ public class FavoritesActivity extends MyMenu implements View.OnClickListener, A
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.my_list_view);
-        TextView title = (TextView)findViewById(R.id.title);
-        title.setText("Mes Favoris:");
+
 
 
         dbh =  new DBHelper(this);
@@ -90,8 +88,6 @@ public class FavoritesActivity extends MyMenu implements View.OnClickListener, A
      */
     @Override
     public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long viewID) {
-
-        Toast.makeText(getApplicationContext(), "Clic reçu", Toast.LENGTH_SHORT).show();
 
         Log.d("db","Clic sur item en position= "+position+" et avec viewID = "+ viewID);
         Intent intent = new Intent(this, DetailsActivity.class);

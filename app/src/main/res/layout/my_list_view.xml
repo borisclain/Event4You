@@ -1,20 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="26dp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/title"
-        android:text="Titre de l'activite"
-        android:background="#317A8A"
-        android:textStyle="bold"
-        android:elegantTextHeight="false"
-        android:paddingLeft="10dp"/>
-
+    android:layout_height="match_parent"
+    android:paddingTop="2dp">
 
 
     <LinearLayout
@@ -23,7 +11,7 @@
         android:layout_height="fill_parent"
         android:gravity="center"
         android:orientation="vertical"
-        android:visibility="gone" >
+        android:visibility="gone">
 
         <ProgressBar
             android:id="@+id/pbHeaderProgress"
@@ -38,6 +26,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:id="@+id/activity_list"
+        android:dividerHeight="2sp"
         android:layout_gravity="center_horizontal" />
 
 </LinearLayout>

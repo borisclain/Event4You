@@ -31,11 +31,8 @@ public class MyMenu extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        else if (id == R.id.menuSuggestion) {
-            Toast.makeText(getApplicationContext(), "Consultons nos suggestions", Toast.LENGTH_SHORT).show();
+
+        if (id == R.id.menuSuggestion) {
             Intent i = new Intent(this, MainActivity.class);
             i.putExtra("Called from menu", 1);
             startActivity(i);
@@ -43,7 +40,7 @@ public class MyMenu extends ActionBarActivity {
             return true;
         }
         else if (id == R.id.menuShowFavorites) {
-            Toast.makeText(getApplicationContext(), "Consultons nos favoris", Toast.LENGTH_SHORT).show();
+
             Intent i = new Intent(this, FavoritesActivity.class);
             startActivity(i);
             //finish();

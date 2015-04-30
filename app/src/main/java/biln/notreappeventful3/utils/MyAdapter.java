@@ -122,12 +122,8 @@ public class MyAdapter extends CursorAdapter {
 
                 }
 
-                //voir listview: MyAdapter notifyDatasetchanged
-
                 if(isChecked){
-                    //Toast.makeText(getApplicationContext(), "Ajouté aux favoris ", Toast.LENGTH_SHORT).show();
                 }else{
-                    //Toast.makeText(getApplicationContext(), "Retiré des favoris ", Toast.LENGTH_SHORT).show();
                 }
             }
 

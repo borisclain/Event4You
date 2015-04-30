@@ -1,9 +1,62 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light">
-        <!-- Customize your theme here. -->
+    <style name="CustomActionBarTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:actionBarStyle">@style/myActionBarTheme</item>
+        <item name="android:displayOptions">showHome|useLogo|showTitle</item>
+
+        <!-- Support library compatibility -->
+        <item name="actionBarStyle">@style/myActionBarTheme</item>
+        <item name="displayOptions">showHome|useLogo|showTitle</item>
+        <item name="contentInsetStart">0dp</item>
+        <item name="logo">@drawable/icon_bar</item>
+
+
     </style>
 
+    <style name="myActionBarTheme" parent="android:style/Widget.Holo.ActionBar">
+        <item name="android:titleTextStyle">@style/myActionBarTitleTextStyle</item>
+
+        <!-- Support library compatibility -->
+        <item name="titleTextStyle">@style/myActionBarTitleTextStyle</item>
+        <item name="background">@drawable/background_actionbar</item>
+
+
+    </style>
+
+    <style name="myActionBarTitleTextStyle" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">#FFFFFF</item>
+
+    </style>
+
+
+
+    <!-- autre style pour texte de l'actionBar plus petit-->
+    <style name="CustomActionBarThemeSmall" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:actionBarStyle">@style/myActionBarThemeSmall</item>
+        <item name="android:displayOptions">showHome|useLogo|showTitle</item>
+
+
+        <!-- Support library compatibility -->
+        <item name="actionBarStyle">@style/myActionBarThemeSmall</item>
+        <item name="displayOptions">showHome|useLogo|showTitle</item>
+        <item name="logo">@drawable/icon_bar</item>
+        <item name="contentInsetStart">0dp</item>
+
+    </style>
+
+    <style name="myActionBarThemeSmall" parent="android:style/Widget.Holo.ActionBar">
+        <item name="android:titleTextStyle">@style/myActionBarTitleTextStyleSmall</item>
+
+        <!-- Support library compatibility -->
+        <item name="titleTextStyle">@style/myActionBarTitleTextStyleSmall</item>
+        <item name="background">@drawable/background_actionbar</item>
+
+    </style>
+
+
+    <style name="myActionBarTitleTextStyleSmall" parent="@android:style/TextAppearance.Small">
+        <item name="android:textColor">#FFFFFF</item>
+
+    </style>
 
 </resources>

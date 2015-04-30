@@ -99,24 +99,6 @@ public class EventfulAPI {
     }
 
 
-    public int getPageCount(String url){
-        int page_count = 0;
-        try{
-            HttpEntity page = getHttp(url);
-            JSONObject js = new JSONObject(EntityUtils.toString(page, HTTP.UTF_8));
-            page_count = Integer.parseInt(js.getString("page_count"));
-        } catch (ClientProtocolException e) {
-            Log.d("HTTP ","Erreur: "+e.getMessage());
-        } catch (IOException e) {
-            Log.d("Web ","Erreur: "+e.getMessage());
-        } catch (ParseException e) {
-            Log.d("Parse ","Erreur: "+e.getMessage());
-        } catch (JSONException e) {
-            Log.d("JSON ","Erreur: "+e.getMessage());
-        }
-        return page_count;
-    }
-
 
     /**
      * Méthode utilitaire locale
@@ -199,8 +181,6 @@ public class EventfulAPI {
         String url = "http://api.eventful.com/json/events/get?" + URLEncodedUtils.format(query, HTTP.UTF_8);
 
 
-
-
         Log.d("ENCODAGE DE L'URL", url);
         ArrayList<String> detailsList = new ArrayList<>();
         try
@@ -235,15 +215,6 @@ public class EventfulAPI {
 
             detailsList.add(s);
             detailsList.add(urlImage);
-
-
-
-            //À garder
-            //detailslist.add(ev.getString("title"));
-            //detailslist.add(ev.getString("address"));
-            //detailslist.add(ev.getString("price"));
-            //detailslist.add(ev.getString("links"));
-            //detailslist.add(ev.getString("images"));
 
 
 

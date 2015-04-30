@@ -191,8 +191,8 @@ public class DetailsActivity extends MyMenu implements View.OnClickListener{
 
         @Override
         protected void onPostExecute(ArrayList<String> list_details) {
-            for(String element : list_details) { //TODO A verifier
-                categories.setText("Categories : "+list_details.get(0));
+            for(String element : list_details) {
+                categories.setText(list_details.get(0));
 
                 // Affichage de l'image
                 Log.d("onPostExecute", "avant l'affichage de l'image");

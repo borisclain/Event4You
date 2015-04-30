@@ -46,8 +46,7 @@ public class MainActivity extends MyMenu implements View.OnClickListener, Adapte
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.my_list_view);
-        TextView title = (TextView)findViewById(R.id.title);
-        title.setText("Nos suggestions pour vous:");
+
 
         dbh = new DBHelper(this);
         db = dbh.getWritableDatabase();

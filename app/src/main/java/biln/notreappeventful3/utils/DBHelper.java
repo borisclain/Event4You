@@ -17,8 +17,6 @@ import java.util.Calendar;
 //static
 public class DBHelper extends SQLiteOpenHelper {
 
-    //private static DBHelper mInstance = null;
-
     public static final String DB_NAME = "eventful.db";
     public static final int DB_VERSION = 213;
 
@@ -35,14 +33,6 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String C_ADVSEARCH = "isAdvSearch";  // 1 si l'événement est nouveau, 0 sinon
     public static final String C_FAVORITE = "favorite";
 
-/*
-    public static DBHelper getInstance(Context ctx){
-        if(mInstance == null){
-            mInstance = new DBHelper(ctx.getApplicationContext());
-        }
-        return mInstance;
-    }
-*/
 
     public DBHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -78,19 +68,8 @@ public class DBHelper extends SQLiteOpenHelper {
      */
     public void deletePassedEvents(SQLiteDatabase db){
 
-        String sql = "DELETE from " + TABLE_EVENTS + " WHERE " + C_DATE_STOP + " <= date('now','+2 day')"; //TODO
+        String sql = "DELETE from " + TABLE_EVENTS + " WHERE " + C_DATE_STOP + " <= date('now','-1 day')";
         db.execSQL(sql);
-
-        /*
-        Calendar c = Calendar.getInstance();
-        Log.d("Clean DB h", ""+ "Current time =&gt; "+c.getTime());
-
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        String today = df.format(c.getTime());
-
-        Log.d("Clean DB aujd", ""+ today);
-        db.execSQL("delete from "+TABLE_EVENTS+" where date("+C_DATE_STOP+") <="+today); //TODO
-        */
     }
 
 
@@ -141,25 +120,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
 
-    /**
-     * Permet de rechercher un mot dans le titre des événements
-     *
-     * @param db La database en entrée
-     * @param word Le mot à rechercher dans les titres
-     * @return c Le curseur permettant d'itérer sur ces mots
-     */
-    public static Cursor searchEventsByTitle(SQLiteDatabase db, String word){
-        String args[] = new String[] { "%"+word+"%" };
-        Cursor c = db.rawQuery("select * from "+TABLE_EVENTS+" where "+C_TITLE+" like ? order by datetime("+
-                C_DATE_STOP+")"+" desc", args);
-        Log.d("DB","cherche events nb = "+c.getCount());
-        return c;
-    }
-
-
-
-
-
     public static void changeFavoriteStatus(SQLiteDatabase db, int id) {
         ContentValues val = new ContentValues();
         Cursor d = db.rawQuery("select * from "+TABLE_EVENTS+" where "+C_ID+" = "+id, null);
@@ -178,23 +138,6 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-
-    /*
-
-    public void setEventsToOld(SQLiteDatabase db){
-
-        ContentValues val = new ContentValues();
-        Cursor c = db.rawQuery("select * from "+TABLE_EVENTS+" where "+C_NEW+" = "+1, null);
-        c.moveToFirst();
-        while (c.isAfterLast() == false) {
-            val.put(C_NEW, 0);
-            int id =  c.getInt(c.getColumnIndex(C_ID));
-            db.update(TABLE_EVENTS , val, C_ID+" = "+id, null);
-            c.moveToNext();
-        }
-    }
-
-    */
 
 
 }

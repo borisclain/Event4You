@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.DateFormat;
+import java.text.Normalizer;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -66,8 +67,7 @@ public class SearchActivity extends MyMenu implements View.OnClickListener, Sele
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_activity);
-        TextView title = (TextView)findViewById(R.id.title);
-        title.setText("Rechercher:");
+
         categories = new ArrayList();
 
         //récupération des elements du layout dans des variables java
@@ -388,6 +388,9 @@ public class SearchActivity extends MyMenu implements View.OnClickListener, Sele
             SharedPreferences mySettings = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
             city = mySettings.getString("myCity", "Montreal");
             Log.d("VILLE EN PREF", " "+city);
+        }else{
+            city = Normalizer.normalize(city, Normalizer.Form.NFD);
+            city = city.replaceAll("[^\\p{ASCII}]", "");
         }
 
         Intent intent = new Intent(this, SearchResultsActivity.class);
