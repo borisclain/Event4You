@@ -27,7 +27,7 @@
 
         <activity
             android:name=".activities.MainActivity"
-            android:label="Évènements suggérés"
+            android:label="Événements suggérés"
             android:logo="@drawable/icon_bar"
             android:theme="@style/CustomActionBarThemeSmall"
             >
