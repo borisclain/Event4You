@@ -29,6 +29,7 @@ import biln.notreappeventful3.event.Event;
  */
 public class EventfulAPI {
 
+    boolean connectionSuccess = true;
     ArrayList<Event> eventsFound;                                          //peuplé par la recherche
     String apiKey = "b5JxXhsHhJTW2mzP";
     //String url = "http://api.eventful.com/json/events/search?app_key="+apiKey;
@@ -158,8 +159,10 @@ public class EventfulAPI {
             }
 
         } catch (ClientProtocolException e) {
+            connectionSuccess = false;
             Log.d("HTTP ", "Erreur: " + e.getMessage());
         } catch (IOException e) {
+            connectionSuccess = false;
             Log.d("Web ", "Erreur: " + e.getMessage());
         } catch (ParseException e) {
             Log.d("Parse ", "Erreur: " + e.getMessage());
@@ -220,8 +223,10 @@ public class EventfulAPI {
 
         }
         catch (ClientProtocolException e) {
+            connectionSuccess = false;
             Log.d("HTTP ","Erreur: "+e.getMessage());
         } catch (IOException e) {
+            connectionSuccess = false;
             Log.d("Web ","Erreur: "+e.getMessage());
         } catch (ParseException e) {
             Log.d("Parse ","Erreur: "+e.getMessage());

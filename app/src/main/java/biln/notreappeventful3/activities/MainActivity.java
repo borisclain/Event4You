@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import biln.notreappeventful3.R;
 import biln.notreappeventful3.menu.MyMenu;
@@ -162,6 +163,8 @@ public class MainActivity extends MyMenu implements View.OnClickListener, Adapte
                 Cursor c = dbh.listEvents(db);
                 adapter.changeCursor(c);
                 linlaHeaderProgress.setVisibility(View.GONE);
+                if(!intent.getBooleanExtra("connection status", false))
+                    Toast.makeText(getApplicationContext(), "Vérifiez votre connexion", Toast.LENGTH_LONG).show(); //TODO
                 unregisterReceiver(busyR);
             }
         }

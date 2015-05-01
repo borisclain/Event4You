@@ -31,7 +31,6 @@ public class ServiceSearchAndPopulate extends IntentService{
         EventfulAPI web = new EventfulAPI();
         DBHelper dbh = new DBHelper(this); //getApplicationContext si ça ne fonctionne pas
         SQLiteDatabase db = dbh.getWritableDatabase();
-
         //message de debut
         Intent in = new Intent("biln.notreappeventful3.BUSY");
         in.putExtra("begin", true);
@@ -40,9 +39,10 @@ public class ServiceSearchAndPopulate extends IntentService{
         if(intent.getBooleanExtra("populateSuggestedList", false)) {
             Log.d("Service", "ON FAIT UNE RECHERCHE WEB DE SUGGESTIONS");
             String myCity = intent.getStringExtra("myCity");
-            populateSuggestedList(web, db, myCity);
+            boolean connectionSuccess = populateSuggestedList(web, db, myCity);
             in = new Intent("biln.notreappeventful3.BUSY");
             in.putExtra("end", true);
+            in.putExtra("connection status", connectionSuccess);
             this.sendBroadcast(in);
         }
         else if (intent.getBooleanExtra("populateAdvancedSearchList", false)){
@@ -52,10 +52,10 @@ public class ServiceSearchAndPopulate extends IntentService{
             String dateStart = b.getString("dateS");
             String dateStop = b.getString("dateT");
             ArrayList<String> categories = b.getStringArrayList("categories");
-
-            populateAdvancedSearchList(web, db, searchCity, dateStart, dateStop, categories);
+            boolean connectionSuccess = populateAdvancedSearchList(web, db, searchCity, dateStart, dateStop, categories);
             in = new Intent("biln.notreappeventful3.BUSY");
             in.putExtra("end", true);
+            in.putExtra("connection status", connectionSuccess);
             this.sendBroadcast(in);
         }
         else
@@ -64,8 +64,9 @@ public class ServiceSearchAndPopulate extends IntentService{
 
     }
 
-    private void populateSuggestedList(EventfulAPI web, SQLiteDatabase db, String myCity) {
+    private boolean populateSuggestedList(EventfulAPI web, SQLiteDatabase db, String myCity) {
         web.getNextEvents(myCity);
+        boolean connectionSuccess = web.connectionSuccess;
         ContentValues val = new ContentValues();
         for (int i = 0; i < web.eventsFound.size(); i++) {
             val.put(DBHelper.C_ID_FROM_EVENTFUL, web.eventsFound.get(i).idFromEventful);
@@ -83,10 +84,13 @@ public class ServiceSearchAndPopulate extends IntentService{
             db.insertWithOnConflict(DBHelper.TABLE_EVENTS, null, val, SQLiteDatabase.CONFLICT_IGNORE);
 
         }
+        return connectionSuccess;
     }
 
-    private void populateAdvancedSearchList(EventfulAPI web, SQLiteDatabase db, String searchCity, String dateStart, String dateStop, ArrayList<String> categories) {
+    private boolean populateAdvancedSearchList(EventfulAPI web, SQLiteDatabase db, String searchCity, String dateStart, String dateStop, ArrayList<String> categories) {
+
         web.getDesiredResults(searchCity, dateStart, dateStop, categories, 1);
+        boolean connectionSuccess = web.connectionSuccess;
         ContentValues val = new ContentValues();
         for (int i = 0; i < web.eventsFound.size(); i++) {
             val.put(DBHelper.C_ID_FROM_EVENTFUL, web.eventsFound.get(i).idFromEventful);
@@ -101,6 +105,6 @@ public class ServiceSearchAndPopulate extends IntentService{
             db.update(DBHelper.TABLE_EVENTS, val, "_id_from_eventful = \""+web.eventsFound.get(i).idFromEventful+"\"", null);
             db.insertWithOnConflict(DBHelper.TABLE_EVENTS, null, val, SQLiteDatabase.CONFLICT_IGNORE);
         }
-
+        return connectionSuccess;
     }
 }
