@@ -51,7 +51,7 @@
             android:name=".activities.DetailsActivity"
             android:logo="@drawable/icon_bar"
             android:theme="@style/CustomActionBarThemeSmall"
-            android:label="Détails de l'évènement">
+            android:label="Détails de l'événement">
         </activity>
 
         <activity

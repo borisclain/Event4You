@@ -15,7 +15,7 @@ import android.util.Log;
 public class DBHelper extends SQLiteOpenHelper {
 
     public static final String DB_NAME = "eventful.db";
-    public static final int DB_VERSION = 216;
+    public static final int DB_VERSION = 217;
 
     public static final String TABLE_EVENTS = "events";
     public static final String C_ID = "_id";
