@@ -25,7 +25,6 @@ public class LauncherActivity extends Activity{
         dbh.deletePassedEvents(db);
         dbh.close();
 
-        hasLoggedIn = false; // TODO Enlever
 
         if(hasLoggedIn)
         {

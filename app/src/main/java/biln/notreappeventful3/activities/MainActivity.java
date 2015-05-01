@@ -15,7 +15,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import biln.notreappeventful3.R;
 import biln.notreappeventful3.menu.MyMenu;
@@ -27,7 +26,6 @@ import biln.notreappeventful3.utils.ServiceSearchAndPopulate;
  *
  */
 public class MainActivity extends MyMenu implements View.OnClickListener, AdapterView.OnItemClickListener {
-    String city;
     ListView listv;
     MyAdapter adapter;
     SQLiteDatabase db;

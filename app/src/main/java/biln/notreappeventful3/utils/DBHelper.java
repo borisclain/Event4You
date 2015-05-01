@@ -7,9 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-
 /**
  * Created by Boris on 2015-03-15.
  */
@@ -18,7 +15,7 @@ import java.util.Calendar;
 public class DBHelper extends SQLiteOpenHelper {
 
     public static final String DB_NAME = "eventful.db";
-    public static final int DB_VERSION = 213;
+    public static final int DB_VERSION = 216;
 
     public static final String TABLE_EVENTS = "events";
     public static final String C_ID = "_id";
